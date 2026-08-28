@@ -13,6 +13,7 @@ import {
 } from "@/components/icons";
 import { DressArt, GamisArt, JacketArt, KebayaArt, NeedleLogo, ShirtArt, SpoolArt } from "@/components/GarmentArt";
 import CheckStatusForm from "@/components/CheckStatusForm";
+import { DemoOne } from "@/components/ui/horizon-hero-demo";
 
 const WA_LINK = "https://wa.me/6281234567890";
 
@@ -120,6 +121,9 @@ export default function LandingPage() {
           </a>
         </div>
       </header>
+
+      {/* 3D Horizon Hero Section */}
+      <DemoOne />
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-stone-50 via-white to-white">
