@@ -18,7 +18,7 @@ export default function PulseFitHeroDemo() {
         { label: "Layanan", onClick: () => scrollTo("#layanan") },
         { label: "Galeri Karya", onClick: () => scrollTo("#galeri") },
         { label: "Tentang Kami", onClick: () => scrollTo("#tentang") },
-        { label: "Cek Status", onClick: () => scrollTo("#cek-status") },
+
         { label: "Kontak", onClick: () => scrollTo("#kontak") },
       ]}
       title="Penjahitan Presisi untuk Gaya Khas Anda"
