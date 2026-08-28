@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -67,10 +67,15 @@ export function PulseFitHero({
   className,
   children,
 }: PulseFitHeroProps) {
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Multiply items 4 times to guarantee 100% seamless pixel-perfect infinite loop (-50% loop shift)
+  const carouselItems = [...programs, ...programs, ...programs, ...programs];
+
   return (
     <section
       className={cn(
-        "relative w-full min-h-screen flex flex-col overflow-hidden bg-slate-950 text-slate-100",
+        "relative w-full min-h-screen flex flex-col overflow-hidden bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950",
         className
       )}
       role="banner"
@@ -261,7 +266,7 @@ export function PulseFitHero({
         </div>
       )}
 
-      {/* Program Cards Carousel (Garment Collections) */}
+      {/* Interactive Seamless Infinite Carousel with Drag / Swipe */}
       {programs.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 80 }}
@@ -272,65 +277,65 @@ export function PulseFitHero({
             paddingTop: "20px",
             paddingBottom: "50px",
           }}
+          ref={carouselRef}
         >
-          {/* Gradient Overlays */}
+          {/* Gradient Overlays for Edge Fading */}
           <div
-            className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none"
+            className="absolute left-0 top-0 bottom-0 z-20 pointer-events-none"
             style={{
               width: "140px",
               background: "linear-gradient(90deg, #020617 0%, rgba(2, 6, 23, 0) 100%)",
             }}
           />
           <div
-            className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 z-20 pointer-events-none"
             style={{
               width: "140px",
               background: "linear-gradient(270deg, #020617 0%, rgba(2, 6, 23, 0) 100%)",
             }}
           />
 
-          {/* Scrolling Container */}
+          {/* Draggable & Auto-scrolling Continuous Track */}
           <motion.div
-            className="flex items-center"
+            className="flex items-center gap-6 pl-6 cursor-grab active:cursor-grabbing select-none"
+            drag="x"
+            dragConstraints={{ left: -2400, right: 0 }}
+            dragElastic={0.08}
             animate={{
-              x: [0, -((programs.length * 360) / 2)],
+              x: ["0%", "-50%"],
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: programs.length * 4,
+                duration: 35,
                 ease: "linear",
               },
             }}
-            style={{
-              gap: "24px",
-              paddingLeft: "24px",
-            }}
           >
-            {[...programs, ...programs].map((program, index) => (
+            {carouselItems.map((program, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.04, y: -8 }}
                 transition={{ duration: 0.3 }}
                 onClick={program.onClick}
-                className="flex-shrink-0 cursor-pointer relative overflow-hidden group border border-slate-800/80"
+                className="flex-shrink-0 relative overflow-hidden group border border-slate-800/80 rounded-2xl shadow-2xl"
                 style={{
-                  width: "320px",
-                  height: "400px",
-                  borderRadius: "20px",
+                  width: "310px",
+                  height: "390px",
                   boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
                 }}
               >
                 <img
                   src={program.image}
                   alt={program.title}
+                  draggable={false}
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
                   }}
-                  className="transition-transform duration-500 group-hover:scale-110"
+                  className="transition-transform duration-500 group-hover:scale-110 pointer-events-none"
                 />
 
                 <div
@@ -341,12 +346,7 @@ export function PulseFitHero({
                 />
 
                 <div
-                  className="absolute bottom-0 left-0 right-0 p-6"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "6px",
-                  }}
+                  className="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-1.5"
                 >
                   <span
                     style={{
@@ -363,7 +363,7 @@ export function PulseFitHero({
                   <h3
                     style={{
                       fontFamily: "Inter, sans-serif",
-                      fontSize: "20px",
+                      fontSize: "19px",
                       fontWeight: 600,
                       color: "#FFFFFF",
                       lineHeight: "1.3",
