@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Stock {
+  id        String   @id @default(uuid())
+  name      String
+  quantity  Int      @default(0)
+  unitPrice Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id           String    @id @default(uuid())
+  buyerName    String
+  stockId      String?
+  stock        Stock?    @relation(fields: [stockId], references: [id], onDelete: SetNull)
+  stockName    String
+  quantity     Int
+  totalPrice   Float
+  description  String?
+  status       String    @default("Perencanaan")
+  purchaseCode String    @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  completedAt  DateTime?
+
+  @@index([status])
+  @@index([purchaseCode])
+}
