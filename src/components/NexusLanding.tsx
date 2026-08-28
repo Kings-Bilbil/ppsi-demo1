@@ -444,6 +444,98 @@ export default function NexusLanding() {
         </div>
       </section>
 
+      {/* Card 5 - Footer kontak + maps (white theme) */}
+      <section className="zcard card-footer" data-card="5">
+        <div className="footer-left">
+          <p className="mono-tag">05 / Hubungi Kami</p>
+          <h2>
+            Arunika Tailor
+          </h2>
+          <p className="footer-desc">
+            Penjahit custom profesional di Pontianak — kebaya, jas, gaun, kemeja & seragam. Konsultasi gratis, pengukuran presisi, dan tracking pesanan real-time.
+          </p>
+          <div className="footer-contact">
+            <div className="footer-row">
+              <span className="footer-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C8.7 1.5 10 2.8 10 4.5C10 7 7 11 7 11C7 11 4 7 4 4.5C4 2.8 5.3 1.5 7 1.5Z" stroke="currentColor" strokeWidth="1.2"/><circle cx="7" cy="4.5" r="1.5" stroke="currentColor" strokeWidth="1.2"/></svg>
+              </span>
+              <div>
+                <h4>Alamat</h4>
+                <p>Jl. Gajah Mada No. 88, Pontianak Tenggara, Kalimantan Barat 78121</p>
+              </div>
+            </div>
+            <div className="footer-row">
+              <span className="footer-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 3.5L7 7L11.5 3.5" stroke="currentColor" strokeWidth="1.2"/><rect x="2.5" y="3.5" width="9" height="7" rx="1" stroke="currentColor" strokeWidth="1.2"/></svg>
+              </span>
+              <div>
+                <h4>Kontak Person</h4>
+                <p>
+                  <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer">+62 812-3456-7890 (WhatsApp)</a> •{" "}
+                  <a href="tel:+6281234567890">Telp</a>
+                </p>
+              </div>
+            </div>
+            <div className="footer-row">
+              <span className="footer-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4.5H11.5L7 8.5L2.5 4.5Z" stroke="currentColor" strokeWidth="1.2"/><rect x="2.5" y="4" width="9" height="7" rx="1" stroke="currentColor" strokeWidth="1.2"/></svg>
+              </span>
+              <div>
+                <h4>Email</h4>
+                <p>
+                  <a href="mailto:halo@arunika-tailor.id">halo@arunika-tailor.id</a> •{" "}
+                  <a href="mailto:arunika.pontianak@gmail.com">arunika.pontianak@gmail.com</a>
+                </p>
+              </div>
+            </div>
+            <div className="footer-row">
+              <span className="footer-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" strokeWidth="1.2"/><path d="M7 1.5V2.5M7 11.5V12.5M1.5 7H2.5M11.5 7H12.5" stroke="currentColor" strokeWidth="1.2"/></svg>
+              </span>
+              <div>
+                <h4>Sosial Media</h4>
+                <p>
+                  <a href="https://instagram.com/arunika.tailor" target="_blank" rel="noreferrer">Instagram</a> •{" "}
+                  <a href="https://facebook.com/arunikatailor" target="_blank" rel="noreferrer">Facebook</a> •{" "}
+                  <a href="https://tiktok.com/@arunika.tailor" target="_blank" rel="noreferrer">TikTok</a>
+                </p>
+                <div className="footer-social">
+                  <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 11C7 13.2 8.8 15 11 15C12.1 15 13 14.6 13.7 13.9L16 16L15.5 13.5C16.3 12.7 17 11.4 17 11C17 8.8 15.2 7 13 7H11C8.8 7 7 8.8 7 11Z" stroke="currentColor" strokeWidth="1.4"/></svg>
+                  </a>
+                  <a href="https://instagram.com/arunika.tailor" target="_blank" rel="noreferrer" aria-label="Instagram">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="1.4"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                  </a>
+                  <a href="mailto:halo@arunika-tailor.id" aria-label="Email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.4"/><path d="M3 7L12 13L21 7" stroke="currentColor" strokeWidth="1.4"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style={{ marginTop: 28, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "#6A7077" }}>
+            © {new Date().getFullYear()} Arunika Tailor Pontianak — Hak Cipta Dilindungi. • AkasaID
+          </p>
+        </div>
+        <div className="footer-right">
+          <div className="footer-map">
+            <iframe
+              title="Lokasi Arunika Tailor Pontianak"
+              src="https://maps.google.com/maps?q=Jl.%20Gajah%20Mada%20No.%2088%20Pontianak%20Kalimantan%20Barat&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+          <div className="footer-map-caption">
+            <span>FIG. 05 / PETA LOKASI — JL. GAJAH MADA 88</span>
+            <a href="https://maps.google.com/?q=Jl.+Gajah+Mada+No.+88+Pontianak" target="_blank" rel="noreferrer" style={{ textDecoration: "underline", color: "var(--carbon)" }}>
+              Buka di Google Maps →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* HUD */}
       <footer className="hud">
         <span className="hud-brand">
