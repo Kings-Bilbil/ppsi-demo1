@@ -11,7 +11,7 @@ import {
   StarIcon,
   UsersIcon,
 } from "@/components/icons";
-import { DressArt, GamisArt, JacketArt, KebayaArt, NeedleLogo, ShirtArt, SpoolArt } from "@/components/GarmentArt";
+import { NeedleLogo, SpoolArt } from "@/components/GarmentArt";
 import CheckStatusForm from "@/components/CheckStatusForm";
 import PulseFitHeroDemo from "@/components/ui/pulse-fit-hero-demo";
 
@@ -22,6 +22,7 @@ const NAV = [
   { href: "#layanan", label: "Layanan" },
   { href: "#galeri", label: "Galeri" },
   { href: "#tentang", label: "Tentang" },
+  { href: "#cek-status", label: "Cek Status" },
   { href: "#kontak", label: "Kontak" },
 ];
 
@@ -49,12 +50,36 @@ const SERVICES = [
 ];
 
 const GALLERY = [
-  { name: "Kebaya Modern", category: "Pesta & Adat", art: <KebayaArt className="h-24 w-24" />, bg: "from-amber-50 to-rose-100 text-[#b98a2f]" },
-  { name: "Jas Pengantin", category: "Formal", art: <JacketArt className="h-24 w-24" />, bg: "from-slate-100 to-slate-200 text-slate-700" },
-  { name: "Gaun Pesta", category: "Evening Wear", art: <DressArt className="h-24 w-24" />, bg: "from-rose-50 to-fuchsia-100 text-rose-500" },
-  { name: "Kemeja Formal", category: "Harian & Kerja", art: <ShirtArt className="h-24 w-24" />, bg: "from-blue-50 to-indigo-100 text-blue-600" },
-  { name: "Gamis Premium", category: "Religi & Santai", art: <GamisArt className="h-24 w-24" />, bg: "from-emerald-50 to-teal-100 text-emerald-700" },
-  { name: "Seragam Kantor", category: "Korporat", art: <SpoolArt className="h-24 w-24" />, bg: "from-orange-50 to-amber-100 text-orange-600" },
+  {
+    name: "Kebaya Modern & Akad Nikah",
+    category: "Pesta & Adat",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=600&fit=crop",
+  },
+  {
+    name: "Jas Pengantin & Tuxedo",
+    category: "Formal & Pesta",
+    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop",
+  },
+  {
+    name: "Gaun Pesta & Evening Wear",
+    category: "Evening Wear",
+    image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=600&fit=crop",
+  },
+  {
+    name: "Kemeja Formal Custom",
+    category: "Harian & Kerja",
+    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&h=600&fit=crop",
+  },
+  {
+    name: "Gamis Premium",
+    category: "Religi & Santai",
+    image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=600&h=600&fit=crop",
+  },
+  {
+    name: "Seragam Kantor & Instansi",
+    category: "Korporat",
+    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=600&fit=crop",
+  },
 ];
 
 const TESTIMONIALS = [
@@ -62,81 +87,99 @@ const TESTIMONIALS = [
     name: "Sarah Amelia",
     role: "Pengantin 2025",
     quote:
-      "Kebaya akad nikah saya jahit di sini dan hasilnya luar biasa. Ukurannya pas sekali dan detail rendanya rapi banget.",
+      "Kebaya akad nikah saya jahit di sini dan hasilnya luar biasa. Ukurannya pas sekali di badan dan detail rendanya sangat rapi.",
   },
   {
     name: "Hendra Gunawan",
     role: "Pemilik Restoran",
     quote:
-      "Order 40 seragam staf dan semuanya selesai tepat waktu. Kualitas jahitan seragam dari potongan pertama sampai terakhir.",
+      "Order 40 seragam staf dan semuanya selesai tepat waktu. Kualitas jahitan konsisten dari potongan pertama sampai terakhir.",
   },
   {
     name: "Maria Krisdayanti",
     role: "Pelanggan Sejak 2021",
     quote:
-      "Fitur cek status pesanannya bikin tenang — tinggal masukkan kode, langsung kelihatan bajunya sudah sampai mana.",
+      "Fitur cek status pesanannya bikin tenang — tinggal masukkan kode 6-huruf, langsung kelihatan bajunya sedang dalam proses apa.",
   },
 ];
 
 function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-3xl font-semibold text-slate-900 sm:text-4xl">{title}</h2>
-      {subtitle && <p className="mt-4 text-base leading-relaxed text-slate-500">{subtitle}</p>}
+      <span className="inline-block rounded-full bg-amber-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-400 border border-amber-500/20">
+        {eyebrow}
+      </span>
+      <h2 className="mt-4 font-sans text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl tracking-tight">
+        {title}
+      </h2>
+      {subtitle && <p className="mt-4 text-base leading-relaxed text-slate-300">{subtitle}</p>}
     </div>
   );
 }
 
 export default function LandingPage() {
   return (
-    <main id="beranda" className="bg-white">
-      {/* PulseFit / Framer Motion Hero Section */}
+    <main id="beranda" className="bg-slate-900 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
+      {/* Hero Section (Preserved PulseFit Hero Design & Case Study Content) */}
       <PulseFitHeroDemo />
 
-      {/* Layanan */}
-      <section id="layanan" className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Layanan Kami */}
+      <section id="layanan" className="relative overflow-hidden bg-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
+        <div className="pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-amber-500/5 blur-3xl" />
+        <div className="pointer-events-none absolute -left-32 bottom-1/4 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl" />
+        
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Layanan Kami"
             title="Semua kebutuhan jahit dalam satu tempat"
-            subtitle="Fokus pada detail, bahan berkualitas, dan komunikasi yang jelas dari awal sampai pesanan selesai."
+            subtitle="Fokus pada detail presisi, bahan berkualitas, dan transparansi pengerjaan dari awal sampai pesanan selesai."
           />
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICES.map((s) => (
               <div
                 key={s.title}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg"
+                className="group relative rounded-2xl border border-slate-800 bg-slate-900/80 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-500/10"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand-dark transition group-hover:bg-brand group-hover:text-white">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-amber-500 group-hover:to-amber-700 group-hover:text-white shadow">
                   {s.icon}
-                </span>
-                <h3 className="mt-5 text-base font-semibold text-slate-900">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.desc}</p>
+                </div>
+                <h3 className="mt-5 text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+                  {s.title}
+                </h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Galeri */}
-      <section id="galeri" className="bg-stone-50 py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Galeri Karya */}
+      <section id="galeri" className="relative overflow-hidden bg-slate-900 py-20 lg:py-28 border-t border-slate-800/60">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            eyebrow="Galeri"
-            title="Hasil karya terbaru"
-            subtitle="Sebagian pekerjaan yang paling kami banggakan dari mejajahit Arunika."
+            eyebrow="Galeri Karya"
+            title="Hasil pengerjaan busana terbaru"
+            subtitle="Sebagian hasil karya terbaik yang dikerjakan dengan presisi tinggi dari meja jahit Arunika Tailor."
           />
-          <div className="mt-14 grid grid-cols-2 gap-5 md:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {GALLERY.map((g) => (
               <figure
                 key={g.name}
-                className={`group relative flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br ${g.bg} shadow-sm transition duration-300 hover:shadow-xl`}
+                className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-2xl"
               >
-                <div className="transition-transform duration-300 group-hover:scale-110">{g.art}</div>
-                <figcaption className="absolute inset-x-0 bottom-0 translate-y-full bg-white/90 px-4 py-3 backdrop-blur-sm transition-transform duration-300 group-hover:translate-y-0">
-                  <p className="text-sm font-semibold text-slate-900">{g.name}</p>
-                  <p className="text-xs text-slate-500">{g.category}</p>
+                <img
+                  src={g.image}
+                  alt={g.name}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-85 transition-opacity duration-300 group-hover:opacity-95" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-6 text-left transition-transform duration-300">
+                  <span className="inline-block rounded-full bg-amber-500/20 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-300 border border-amber-500/30 backdrop-blur-md mb-2">
+                    {g.category}
+                  </span>
+                  <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+                    {g.name}
+                  </h3>
                 </figcaption>
               </figure>
             ))}
@@ -144,99 +187,102 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Tentang */}
-      <section id="tentang" className="py-20 lg:py-28">
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="relative mx-auto flex h-80 w-full max-w-md items-center justify-center rounded-3xl bg-gradient-to-br from-brand/15 via-amber-50 to-rose-50 shadow-inner">
-            <SpoolArt className="h-40 w-40 text-brand-dark" />
-            <span className="absolute right-6 top-6 rounded-full bg-white/90 px-4 py-1.5 text-xs font-semibold text-slate-700 shadow ring-1 ring-black/5">
-              Sejak 2014
+      {/* Tentang Kami */}
+      <section id="tentang" className="relative overflow-hidden bg-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
+        <div className="pointer-events-none absolute -left-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+        
+        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div className="relative mx-auto flex h-88 w-full max-w-md items-center justify-center rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-8 shadow-2xl backdrop-blur-md">
+            <SpoolArt className="h-44 w-44 text-amber-400/80 drop-shadow-lg" />
+            <span className="absolute right-6 top-6 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-400 shadow backdrop-blur-md">
+              Sejak 2014 • Pontianak
             </span>
           </div>
+
           <div>
             <SectionHeading
               eyebrow="Tentang Kami"
-              title="Mejajahit kecil dengan standar besar"
+              title="Meja jahit lokal dengan standar kualitas tinggi"
             />
-            <div className="mt-6 space-y-4 leading-relaxed text-slate-500">
+            <div className="mt-6 space-y-4 leading-relaxed text-slate-300">
               <p>
-                Arunika Tailor berawal dari satu mesin jahit di ruang tamu rumah di Pontianak.
-                Dua belas tahun kemudian, kami telah menyelesaikan lebih dari tiga ribu pesanan —
-                dari gaun pesta, kebaya adat, sampai seragam seluruh staf restoran.
+                Arunika Tailor berawal dari satu mesin jahit di rumah di Kota Pontianak.
+                Selama lebih dari 12 tahun berjalan, kami telah menyelesaikan lebih dari 3.200 pesanan —
+                dari gaun pesta, kebaya adat, hingga seragam instansi dan perusahaan.
               </p>
               <p>
-                Kami percaya baju yang baik lahir dari pengukuran yang cermat dan komunikasi yang
-                jujur. Setiap pesanan dikerjakan satu tukang jahit dari awal hingga akhir, sehingga
-                kualitasnya konsisten dan tanggung jawabnya jelas.
+                Kami percaya pakaian yang indah lahir dari pengukuran yang teliti dan komunikasi yang
+                jujur. Setiap pesanan ditangani dengan cermat sehingga kualitasnya terjamin dan tepat waktu.
               </p>
             </div>
-            <ul className="mt-8 space-y-3">
+            
+            <ul className="mt-8 space-y-3.5">
               {[
-                "Pengukuran gratis untuk pelanggan baru",
-                "Perbaikan ulang jika ukuran tidak pas*",
-                "Update status pesanan secara online",
+                "Pengukuran gratis untuk pelanggan baru di Pontianak",
+                "Garansi perbaikan ulang jika ukuran tidak pas*",
+                "Pencekan status pesanan online secara real-time",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-slate-700">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                <li key={item} className="flex items-center gap-3 text-sm text-slate-200 font-medium">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40">
                     <CheckIcon className="h-3 w-3" />
                   </span>
                   {item}
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-xs text-slate-400">
-              *Berlaku untuk kesalahan produksi dari sisi kami.
+            <p className="mt-4 text-xs text-slate-500">
+              *Berlaku untuk kesalahan produksi dari sisi tim penjahit kami.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Cek Status */}
-      <section id="cek-status" className="relative overflow-hidden bg-slate-900 py-20 lg:py-28">
-        <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-brand/20 blur-3xl" />
+      {/* Cek Status Pesanan Section */}
+      <section id="cek-status" className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
+        <div className="pointer-events-none absolute left-1/2 top-0 h-96 w-[48rem] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+        
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand">Cek Status Pesanan</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">
-            Bajumu sudah sampai mana?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate-300">
-            Masukkan kode pembelian 6 huruf yang Anda terima saat memesan untuk melihat posisi
-            pesanan secara real-time.
-          </p>
-          <div className="mt-10 text-left">
+          <SectionHeading
+            eyebrow="Fitur Cek Status"
+            title="Bajumu sudah sampai mana?"
+            subtitle="Masukkan kode pembelian 6 huruf yang Anda terima saat memesan untuk melihat status pengerjaan pesanan Anda secara real-time."
+          />
+          
+          <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900/90 p-6 sm:p-8 shadow-2xl backdrop-blur-md text-left">
             <CheckStatusForm />
           </div>
         </div>
       </section>
 
-      {/* Testimoni */}
-      <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Testimoni Pelanggan */}
+      <section className="relative overflow-hidden bg-slate-900 py-20 lg:py-28 border-t border-slate-800/60">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Testimoni"
-            title="Apa kata pelanggan"
+            title="Apa kata pelanggan kami"
+            subtitle="Kepuasan dan kepercayaaan pelanggan adalah prioritas utama Arunika Tailor."
           />
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
             {TESTIMONIALS.map((t) => (
               <figure
                 key={t.name}
-                className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                className="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-amber-500/40 hover:-translate-y-1"
               >
-                <div className="flex gap-0.5 text-amber-400">
+                <div className="flex gap-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
                     <StarIcon key={i} className="h-4 w-4" />
                   ))}
                 </div>
-                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-slate-600">
+                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-slate-300 italic">
                   “{t.quote}”
                 </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand/30 to-rose-200 text-sm font-bold text-brand-dark">
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-800/80 pt-4">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-sm font-bold text-white shadow">
                     {t.name.charAt(0)}
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                    <p className="text-xs text-slate-500">{t.role}</p>
+                    <p className="text-sm font-bold text-white">{t.name}</p>
+                    <p className="text-xs text-amber-400">{t.role}</p>
                   </div>
                 </figcaption>
               </figure>
@@ -245,30 +291,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Kontak / Footer */}
+      {/* Footer / Kontak */}
       <footer id="kontak" className="border-t border-slate-800 bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-12 md:grid-cols-3">
             <div>
               <a href="#beranda" className="flex items-center gap-2.5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-dark text-white">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow">
                   <NeedleLogo className="h-5 w-5" />
                 </span>
-                <span className="font-display text-lg font-semibold text-white">
-                  Arunika <span className="text-brand">Tailor</span>
+                <span className="font-sans text-lg font-bold text-white tracking-wide">
+                  Arunika <span className="text-amber-400">Tailor</span>
                 </span>
               </a>
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-                Jasa penjahitan premium di Pontianak untuk pakaian custom, seragam, dan perbaikan
-                pakaian Anda.
+                Jasa penjahitan premium di Pontianak untuk pakaian custom, kebaya, jas, seragam, dan perbaikan busana Anda.
               </p>
-              <div className="mt-5 flex gap-3">
+              <div className="mt-6 flex gap-3">
                 <a
                   href={WA_LINK}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="WhatsApp"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-brand hover:text-brand"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-300 transition hover:border-amber-400 hover:text-amber-400 hover:scale-105"
                 >
                   <ChatIcon className="h-4 w-4" />
                 </a>
@@ -277,14 +322,14 @@ export default function LandingPage() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-brand hover:text-brand"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-300 transition hover:border-amber-400 hover:text-amber-400 hover:scale-105"
                 >
                   <InstagramIcon className="h-4 w-4" />
                 </a>
                 <a
                   href="tel:+6281234567890"
                   aria-label="Telepon"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-brand hover:text-brand"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-300 transition hover:border-amber-400 hover:text-amber-400 hover:scale-105"
                 >
                   <PhoneIcon className="h-4 w-4" />
                 </a>
@@ -292,44 +337,44 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Kontak</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400">Alamat & Kontak</h3>
               <ul className="mt-5 space-y-4 text-sm">
-                <li className="flex gap-3">
-                  <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <li className="flex gap-3 text-slate-300">
+                  <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                   Jl. Gajah Mada No. 88, Pontianak Tenggara, Kota Pontianak, Kalimantan Barat 78121
                 </li>
-                <li className="flex gap-3">
-                  <PhoneIcon className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <li className="flex gap-3 text-slate-300">
+                  <PhoneIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                   +62 812-3456-7890
                 </li>
-                <li className="flex gap-3">
-                  <ClockIcon className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                <li className="flex gap-3 text-slate-300">
+                  <ClockIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
                   Senin – Sabtu, 09.00 – 17.00 WIB
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Navigasi</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400">Navigasi Utama</h3>
               <ul className="mt-5 space-y-3 text-sm">
                 {NAV.map((item) => (
                   <li key={item.href}>
-                    <a href={item.href} className="text-slate-400 transition hover:text-brand">
+                    <a href={item.href} className="text-slate-400 transition hover:text-amber-400">
                       {item.label}
                     </a>
                   </li>
                 ))}
-                <li>
-                  <a href="/login" className="text-slate-600 transition hover:text-slate-400">
-                    Login Admin
+                <li className="pt-2">
+                  <a href="/login" className="text-slate-500 transition hover:text-slate-300 text-xs">
+                    🔒 Login Portal Admin
                   </a>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-14 border-t border-slate-800 pt-6 text-xs text-slate-500">
-            © {new Date().getFullYear()} Arunika Tailor Pontianak. Semua hak dilindungi.
+          <div className="mt-14 border-t border-slate-800/80 pt-6 text-center text-xs text-slate-500">
+            © {new Date().getFullYear()} Arunika Tailor Pontianak. Hak Cipta Dilindungi.
           </div>
         </div>
       </footer>
