@@ -16,25 +16,18 @@ export default function PulseFitHeroDemo() {
       navigation={[
         { label: "Beranda", onClick: () => scrollTo("#beranda") },
         { label: "Layanan", onClick: () => scrollTo("#layanan") },
-        { label: "Galeri", onClick: () => scrollTo("#galeri") },
-        { label: "Tentang", onClick: () => scrollTo("#tentang") },
+        { label: "Galeri Karya", onClick: () => scrollTo("#galeri") },
+        { label: "Tentang Kami", onClick: () => scrollTo("#tentang") },
         { label: "Cek Status", onClick: () => scrollTo("#cek-status") },
+        { label: "Kontak", onClick: () => scrollTo("#kontak") },
       ]}
-      ctaButton={{
-        label: "Lacak Pesanan Saya",
-        onClick: () => scrollTo("#cek-status"),
-      }}
       title="Penjahitan Presisi untuk Gaya Khas Anda"
       subtitle="Dari kebaya pernikahan, jas pengantin, hingga seragam kantor — setiap potong dikerjakan dengan cermat, bahan pilihan, dan transparansi status pesanan real-time."
       primaryAction={{
         label: "Pesan via WhatsApp",
         onClick: () => window.open(WA_LINK, "_blank"),
       }}
-      secondaryAction={{
-        label: "Lihat Galeri Karya",
-        onClick: () => scrollTo("#galeri"),
-      }}
-      disclaimer="*Pengukuran gratis & garansi perbaikan ulang jika ukuran tidak pas"
+      disclaimer="*Pengukuran gratis dan garansi perbaikan ulang jika ukuran tidak pas"
       socialProof={{
         avatars: [
           "https://i.pravatar.cc/150?img=32",
@@ -42,13 +35,13 @@ export default function PulseFitHeroDemo() {
           "https://i.pravatar.cc/150?img=47",
           "https://i.pravatar.cc/150?img=68",
         ],
-        text: "Dipercaya lebih dari 3.200+ pelanggan di Pontianak",
+        text: "Dipercaya oleh lebih dari 3.200 pelanggan di Pontianak",
       }}
-      showStatusCheck={true}
+      backgroundImage="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1920&q=80"
       programs={[
         {
           image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&h=650&fit=crop",
-          category: "CUSTOM WEAR",
+          category: "BUSANA CUSTOM",
           title: "Kebaya Modern & Akad Nikah",
           onClick: () => scrollTo("#galeri"),
         },
@@ -60,13 +53,13 @@ export default function PulseFitHeroDemo() {
         },
         {
           image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&h=650&fit=crop",
-          category: "ELEGANT DRESS",
-          title: "Gaun Pesta & Evening Wear",
+          category: "EVENING WEAR",
+          title: "Gaun Pesta & Evening Dress",
           onClick: () => scrollTo("#galeri"),
         },
         {
           image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=650&fit=crop",
-          category: "KORPORAT",
+          category: "SERAGAM",
           title: "Kemeja Formal & Seragam Kantor",
           onClick: () => scrollTo("#galeri"),
         },

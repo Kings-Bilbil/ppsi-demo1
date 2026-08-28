@@ -99,17 +99,17 @@ const TESTIMONIALS = [
     name: "Maria Krisdayanti",
     role: "Pelanggan Sejak 2021",
     quote:
-      "Fitur cek status pesanannya bikin tenang — tinggal masukkan kode 6-huruf, langsung kelihatan bajunya sedang dalam proses apa.",
+      "Fitur cek status pesanannya bikin tenang — tinggal masukkan kode 6 huruf, langsung kelihatan bajunya sedang dalam proses apa.",
   },
 ];
 
 function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <span className="inline-block rounded-full bg-amber-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-400 border border-amber-500/20">
+      <span className="inline-block rounded-full bg-amber-500/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.25em] text-amber-400 border border-amber-500/30 backdrop-blur-md">
         {eyebrow}
       </span>
-      <h2 className="mt-4 font-sans text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl tracking-tight">
+      <h2 className="mt-4 font-sans text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl tracking-tight drop-shadow">
         {title}
       </h2>
       {subtitle && <p className="mt-4 text-base leading-relaxed text-slate-300">{subtitle}</p>}
@@ -119,14 +119,17 @@ function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: 
 
 export default function LandingPage() {
   return (
-    <main id="beranda" className="bg-slate-900 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
-      {/* Hero Section (Preserved PulseFit Hero Design & Case Study Content) */}
+    <main id="beranda" className="bg-slate-950 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
+      {/* Centered Store Profile Hero Section */}
       <PulseFitHeroDemo />
 
-      {/* Layanan Kami */}
-      <section id="layanan" className="relative overflow-hidden bg-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
-        <div className="pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-amber-500/5 blur-3xl" />
-        <div className="pointer-events-none absolute -left-32 bottom-1/4 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl" />
+      {/* Layanan Kami (With Real Photography Background Overlay) */}
+      <section id="layanan" className="relative overflow-hidden py-20 lg:py-28 border-t border-slate-800/60">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1520006403909-838d6b92c22e?w=1920&q=80')` }}
+        />
+        <div className="absolute inset-0 bg-slate-950/92 backdrop-blur-sm" />
         
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
@@ -138,9 +141,9 @@ export default function LandingPage() {
             {SERVICES.map((s) => (
               <div
                 key={s.title}
-                className="group relative rounded-2xl border border-slate-800 bg-slate-900/80 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-500/10"
+                className="group relative rounded-2xl border border-slate-800/90 bg-slate-900/80 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-500/10"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-amber-500 group-hover:to-amber-700 group-hover:text-white shadow">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-amber-500 group-hover:to-amber-700 group-hover:text-white shadow">
                   {s.icon}
                 </div>
                 <h3 className="mt-5 text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
@@ -154,7 +157,7 @@ export default function LandingPage() {
       </section>
 
       {/* Galeri Karya */}
-      <section id="galeri" className="relative overflow-hidden bg-slate-900 py-20 lg:py-28 border-t border-slate-800/60">
+      <section id="galeri" className="relative overflow-hidden py-20 lg:py-28 border-t border-slate-800/60 bg-slate-950">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Galeri Karya"
@@ -187,14 +190,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Tentang Kami */}
-      <section id="tentang" className="relative overflow-hidden bg-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
-        <div className="pointer-events-none absolute -left-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
-        
+      {/* Tentang Kami (With Real Photography Background Overlay) */}
+      <section id="tentang" className="relative overflow-hidden py-20 lg:py-28 border-t border-slate-800/60">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=1920&q=80')` }}
+        />
+        <div className="absolute inset-0 bg-slate-950/93 backdrop-blur-sm" />
+
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="relative mx-auto flex h-88 w-full max-w-md items-center justify-center rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/50 p-8 shadow-2xl backdrop-blur-md">
+          <div className="relative mx-auto flex h-88 w-full max-w-md items-center justify-center rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-indigo-950/70 p-8 shadow-2xl backdrop-blur-md">
             <SpoolArt className="h-44 w-44 text-amber-400/80 drop-shadow-lg" />
-            <span className="absolute right-6 top-6 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-400 shadow backdrop-blur-md">
+            <span className="absolute right-6 top-6 rounded-full border border-amber-500/30 bg-amber-500/20 px-4 py-1.5 text-xs font-bold text-amber-400 shadow backdrop-blur-md">
               Sejak 2014 • Pontianak
             </span>
           </div>
@@ -219,7 +226,7 @@ export default function LandingPage() {
             <ul className="mt-8 space-y-3.5">
               {[
                 "Pengukuran gratis untuk pelanggan baru di Pontianak",
-                "Garansi perbaikan ulang jika ukuran tidak pas*",
+                "Garansi perbaikan ulang jika ukuran tidak pas",
                 "Pencekan status pesanan online secara real-time",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-slate-200 font-medium">
@@ -237,13 +244,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Cek Status Pesanan Section */}
-      <section id="cek-status" className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 py-20 lg:py-28 border-t border-slate-800/60">
-        <div className="pointer-events-none absolute left-1/2 top-0 h-96 w-[48rem] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+      {/* Cek Status Pesanan Section (Utama) */}
+      <section id="cek-status" className="relative overflow-hidden py-20 lg:py-28 border-t border-slate-800/60">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=1920&q=80')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/92 via-slate-950/90 to-slate-950 backdrop-blur-sm" />
         
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
           <SectionHeading
-            eyebrow="Fitur Cek Status"
+            eyebrow="Fitur Cek Status Pesanan"
             title="Bajumu sudah sampai mana?"
             subtitle="Masukkan kode pembelian 6 huruf yang Anda terima saat memesan untuk melihat status pengerjaan pesanan Anda secara real-time."
           />
@@ -255,10 +266,10 @@ export default function LandingPage() {
       </section>
 
       {/* Testimoni Pelanggan */}
-      <section className="relative overflow-hidden bg-slate-900 py-20 lg:py-28 border-t border-slate-800/60">
+      <section className="relative overflow-hidden py-20 lg:py-28 border-t border-slate-800/60 bg-slate-950">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            eyebrow="Testimoni"
+            eyebrow="Testimoni Pelanggan"
             title="Apa kata pelanggan kami"
             subtitle="Kepuasan dan kepercayaaan pelanggan adalah prioritas utama Arunika Tailor."
           />
@@ -266,7 +277,7 @@ export default function LandingPage() {
             {TESTIMONIALS.map((t) => (
               <figure
                 key={t.name}
-                className="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-amber-500/40 hover:-translate-y-1"
+                className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-amber-500/40 hover:-translate-y-1"
               >
                 <div className="flex gap-1 text-amber-400">
                   {[...Array(5)].map((_, i) => (
@@ -274,7 +285,7 @@ export default function LandingPage() {
                   ))}
                 </div>
                 <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-slate-300 italic">
-                  “{t.quote}”
+                  "{t.quote}"
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-800/80 pt-4">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-sm font-bold text-white shadow">
@@ -292,7 +303,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer / Kontak */}
-      <footer id="kontak" className="border-t border-slate-800 bg-slate-950 text-slate-300">
+      <footer id="kontak" className="border-t border-slate-800/80 bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-12 md:grid-cols-3">
             <div>
@@ -366,7 +377,7 @@ export default function LandingPage() {
                 ))}
                 <li className="pt-2">
                   <a href="/login" className="text-slate-500 transition hover:text-slate-300 text-xs">
-                    🔒 Login Portal Admin
+                    Login Portal Admin
                   </a>
                 </li>
               </ul>
