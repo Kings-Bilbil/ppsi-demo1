@@ -43,31 +43,26 @@ export default function PulseFitHeroDemo() {
           image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&h=650&fit=crop",
           category: "BUSANA CUSTOM",
           title: "Kebaya Modern & Akad Nikah",
-          onClick: () => scrollTo("#galeri"),
         },
         {
           image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&h=650&fit=crop",
           category: "FORMAL WEAR",
           title: "Jas Pengantin & Tuxedo Premium",
-          onClick: () => scrollTo("#galeri"),
         },
         {
           image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&h=650&fit=crop",
           category: "EVENING WEAR",
           title: "Gaun Pesta & Evening Dress",
-          onClick: () => scrollTo("#galeri"),
         },
         {
           image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=650&fit=crop",
           category: "SERAGAM",
           title: "Kemeja Formal & Seragam Kantor",
-          onClick: () => scrollTo("#galeri"),
         },
         {
           image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=500&h=650&fit=crop",
           category: "PREMIUM WEAR",
           title: "Gamis & Busana Muslim Premium",
-          onClick: () => scrollTo("#galeri"),
         },
       ]}
     />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +14,6 @@ interface ProgramCard {
   image: string;
   category: string;
   title: string;
-  onClick?: () => void;
 }
 
 interface PulseFitHeroProps {
@@ -67,8 +66,6 @@ export function PulseFitHero({
   className,
   children,
 }: PulseFitHeroProps) {
-  const carouselRef = useRef<HTMLDivElement>(null);
-
   // Multiply items 4 times to guarantee 100% seamless pixel-perfect infinite loop (-50% loop shift)
   const carouselItems = [...programs, ...programs, ...programs, ...programs];
 
@@ -266,18 +263,13 @@ export function PulseFitHero({
         </div>
       )}
 
-      {/* Interactive Seamless Infinite Carousel with Drag / Swipe */}
+      {/* Interactive Continuous Infinite Carousel (Continuous Auto-scroll + Drag/Swipe) */}
       {programs.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.7 }}
-          className="relative z-10 w-full overflow-hidden"
-          style={{
-            paddingTop: "20px",
-            paddingBottom: "50px",
-          }}
-          ref={carouselRef}
+          className="relative z-10 w-full overflow-hidden py-6 select-none"
         >
           {/* Gradient Overlays for Edge Fading */}
           <div
@@ -295,85 +287,63 @@ export function PulseFitHero({
             }}
           />
 
-          {/* Draggable & Auto-scrolling Continuous Track */}
+          {/* Draggable Outer Container (Allows Manual Swipe/Drag Without Stopping Auto-scroll) */}
           <motion.div
-            className="flex items-center gap-6 pl-6 cursor-grab active:cursor-grabbing select-none"
+            className="flex w-full overflow-x-auto scrollbar-none cursor-grab active:cursor-grabbing"
             drag="x"
             dragConstraints={{ left: -2400, right: 0 }}
-            dragElastic={0.08}
-            animate={{
-              x: ["0%", "-50%"],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: "loop",
-                duration: 35,
-                ease: "linear",
-              },
-            }}
+            dragElastic={0.05}
           >
-            {carouselItems.map((program, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.04, y: -8 }}
-                transition={{ duration: 0.3 }}
-                onClick={program.onClick}
-                className="flex-shrink-0 relative overflow-hidden group border border-slate-800/80 rounded-2xl shadow-2xl"
-                style={{
-                  width: "310px",
-                  height: "390px",
-                  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
-                }}
-              >
-                <img
-                  src={program.image}
-                  alt={program.title}
-                  draggable={false}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                  className="transition-transform duration-500 group-hover:scale-110 pointer-events-none"
-                />
-
+            {/* Auto-scrolling Continuous Marquee Track */}
+            <motion.div
+              className="flex items-center gap-6 pl-6 shrink-0"
+              animate={{
+                x: ["0%", "-50%"],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 35,
+                  ease: "linear",
+                },
+              }}
+            >
+              {carouselItems.map((program, index) => (
                 <div
-                  className="absolute inset-0"
+                  key={index}
+                  className="flex-shrink-0 relative overflow-hidden group border border-slate-800/80 rounded-2xl shadow-2xl transition-transform duration-300 hover:scale-[1.03]"
                   style={{
-                    background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 25%, rgba(2, 6, 23, 0.95) 100%)",
+                    width: "310px",
+                    height: "390px",
+                    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
                   }}
-                />
-
-                <div
-                  className="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-1.5"
                 >
-                  <span
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    draggable={false}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 pointer-events-none"
+                  />
+
+                  <div
+                    className="absolute inset-0 pointer-events-none"
                     style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "12px",
-                      fontWeight: 700,
-                      color: "#f3d489",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
+                      background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 25%, rgba(2, 6, 23, 0.95) 100%)",
                     }}
-                  >
-                    {program.category}
-                  </span>
-                  <h3
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "19px",
-                      fontWeight: 600,
-                      color: "#FFFFFF",
-                      lineHeight: "1.3",
-                    }}
-                  >
-                    {program.title}
-                  </h3>
+                  />
+
+                  <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-1.5 pointer-events-none">
+                    <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">
+                      {program.category}
+                    </span>
+                    <h3 className="text-lg font-semibold text-white leading-snug">
+                      {program.title}
+                    </h3>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
           </motion.div>
         </motion.div>
       )}
