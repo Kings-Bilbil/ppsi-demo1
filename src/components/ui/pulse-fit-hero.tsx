@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,6 @@ export function PulseFitHero({
     { label: "Layanan", href: "#layanan" },
     { label: "Galeri", href: "#galeri" },
     { label: "Tentang", href: "#tentang" },
-    { label: "Cek Status", href: "#cek-status" },
     { label: "Kontak", href: "#kontak" },
   ],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -70,6 +69,8 @@ export function PulseFitHero({
 }: PulseFitHeroProps) {
   // Multiply items 4 times to guarantee 100% seamless pixel-perfect infinite loop (-50% loop shift)
   const carouselItems = [...programs, ...programs, ...programs, ...programs];
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const scrollToCekStatus = () => document.querySelector("#cek-status")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
@@ -88,14 +89,17 @@ export function PulseFitHero({
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/85 to-slate-950" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent" />
 
-      {/* Centered Navigation Bar */}
+      {/* Navigation Bar with Hamburger */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-20 flex justify-center items-center px-6 lg:px-16 py-6 border-b border-slate-800/40 backdrop-blur-md bg-slate-950/40"
+        className="relative z-20 flex justify-between items-center px-6 lg:px-16 py-4 border-b border-slate-800/40 backdrop-blur-md bg-slate-950/40"
       >
-        <nav className="flex flex-wrap items-center justify-center gap-6 sm:gap-10" aria-label="Main navigation">
+        <a href="#beranda" className="font-sans text-lg font-bold tracking-wide text-white">
+          {logo} <span className="text-amber-400">.</span>
+        </a>
+        <nav className="hidden lg:flex flex-wrap items-center justify-center gap-6 sm:gap-10" aria-label="Main navigation">
           {navigation.map((item, index) => (
             <a
               key={index}
@@ -108,7 +112,38 @@ export function PulseFitHero({
             </a>
           ))}
         </nav>
+        <button
+          aria-label="Buka menu"
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+          className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800"
+        >
+          {mobileOpen ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 18L18 6M6 6l12 12" /></svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+          )}
+        </button>
       </motion.header>
+      {mobileOpen && (
+        <div className="lg:hidden relative z-20 border-b border-slate-800/40 bg-slate-950/95 backdrop-blur-md">
+          <nav className="flex flex-col p-4 gap-1">
+            {navigation.map((item, index) => (
+              <a
+                key={index}
+                href={item.href || "#"}
+                onClick={() => {
+                  item.onClick?.();
+                  setMobileOpen(false);
+                }}
+                className="rounded-lg px-3 py-2.5 text-sm font-semibold uppercase tracking-wider text-slate-300 hover:bg-slate-800 hover:text-amber-400"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
 
       {/* Main Content (Centered Store Profile) */}
       {children ? (
@@ -170,13 +205,13 @@ export function PulseFitHero({
               {subtitle}
             </p>
 
-            {/* Primary Action Button (WhatsApp) */}
+            {/* Primary Actions: WhatsApp + Cek Status (sebelahan) */}
             {primaryAction && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="flex items-center justify-center"
+                className="flex flex-col sm:flex-row items-center justify-center gap-3"
               >
                 <button
                   onClick={primaryAction.onClick}
@@ -205,6 +240,13 @@ export function PulseFitHero({
                       strokeLinejoin="round"
                     />
                   </svg>
+                </button>
+                <button
+                  onClick={scrollToCekStatus}
+                  className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-slate-900/60 px-7 py-4 text-sm font-semibold tracking-wide text-amber-400 backdrop-blur-md hover:bg-amber-500/10 hover:border-amber-400 transition"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 21l-4-4m0-7a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  Cek Status
                 </button>
               </motion.div>
             )}
