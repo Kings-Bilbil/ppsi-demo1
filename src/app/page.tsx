@@ -285,7 +285,7 @@ export default function LandingPage() {
                   ))}
                 </div>
                 <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-slate-300 italic">
-                  "{t.quote}"
+                  “{t.quote}”
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-800/80 pt-4">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-700 text-sm font-bold text-white shadow">

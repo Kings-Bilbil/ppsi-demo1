@@ -54,10 +54,12 @@ export function PulseFitHero({
     { label: "Cek Status", href: "#cek-status" },
     { label: "Kontak", href: "#kontak" },
   ],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ctaButton,
   title,
   subtitle,
   primaryAction,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   secondaryAction,
   disclaimer,
   socialProof,
