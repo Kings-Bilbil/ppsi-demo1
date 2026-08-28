@@ -108,7 +108,7 @@
 }
 
 /* card 2 macro — cek status */
-.card-macro { background: var(--carbon); }
+.card-macro { background: var(--carbon); -webkit-overflow-scrolling: touch; }
 .macro-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .macro-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,14,21,0.35), rgba(13,14,21,0.08) 40%, rgba(13,14,21,0.55)); }
 .crosshair-v, .crosshair-h { position: absolute; background: rgba(255,255,255,0.4); }
@@ -245,6 +245,7 @@
   position: fixed; left: 0; right: 0; bottom: 0; height: var(--hud-h); z-index: 9999;
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding: 0 clamp(20px, 4vw, 40px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   background: rgba(244,245,246,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--steel);
 }
@@ -262,28 +263,66 @@
 .hud-arrow:focus-visible { outline: 2px solid var(--carbon); outline-offset: 2px; }
 
 @media (max-width: 900px) {
-  .glass-a { width: 140px; height: 140px; left: 4%; }
-  .glass-b { width: 100px; height: 100px; right: 6%; }
-  .glass-c { width: 80px; height: 80px; right: 12%; }
-  .crosshair-v { left: 50%; }
-  .node-dot { left: 50%; }
-  .cek-panel { left: 16px; right: 16px; width: auto; top: calc(42% + 28px); max-height: calc(100vh - 42% - var(--hud-h) - 32px); }
-  .macro-caption { left: 24px; right: 24px; bottom: auto; top: 24px; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 0.3em; padding: 6px 10px 6px 12px; margin-bottom: 18px; }
+  .hero-title { font-size: clamp(40px, 14vw, 72px); }
+  .hero-sub { font-size: 14px; max-width: 88%; margin-top: 18px; line-height: 1.6; }
+  .hero-scroll-hint { bottom: calc(var(--hud-h) + 14px); font-size: 10px; gap: 8px; }
+  .glass-a { width: 110px; height: 110px; left: 4%; top: 10%; }
+  .glass-b { width: 84px; height: 84px; right: 6%; bottom: 14%; }
+  .glass-c { width: 64px; height: 64px; right: 10%; top: 16%; }
+  /* card-macro: stack vertically, scrollable */
+  .card-macro { display: flex; flex-direction: column; padding: 16px 16px calc(var(--hud-h) + 16px); gap: 12px; overflow-y: auto; overflow-x: hidden; justify-content: flex-start; }
+  .crosshair-v { left: 50%; opacity: 0.18; }
+  .crosshair-h { top: 36%; opacity: 0.18; }
+  .node-dot { left: 50%; top: 36%; width: 10px; height: 10px; }
+  .macro-caption { position: relative; left: auto; right: auto; top: auto; bottom: auto; max-width: none; background: rgba(13,14,21,0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.14); padding: 16px; border-radius: 14px; }
+  .macro-caption .mono { font-size: 10px; margin-bottom: 8px; }
+  .macro-caption h2 { font-size: clamp(22px, 6vw, 30px); }
+  .macro-caption p { font-size: 13px; margin-top: 8px; }
+  .cek-panel { position: relative; left: auto; right: auto; top: auto; width: auto; max-height: none; overflow: visible; padding: 16px; border-radius: 14px; }
+  .cek-panel h3 { font-size: 16px; }
+  .cek-panel-desc { font-size: 12px; margin-bottom: 12px; }
   .accordion { flex-direction: column; }
-  .slice { border-right: none; border-bottom: 1px solid var(--steel); }
+  .slice { border-right: none; border-bottom: 1px solid var(--steel); min-height: 74px; }
+  .slice.active { min-height: 280px; }
   .slice:last-child { border-bottom: none; }
-  .slice-idle { flex-direction: row; align-items: center; justify-content: space-between; padding: 0 24px; }
-  .slice-idle-title { writing-mode: horizontal-tb; letter-spacing: 0.08em; }
-  .slice-reveal { left: 24px; right: 24px; bottom: 20px; }
-  .slice-reveal h3 { white-space: normal; }
-  .fold-head { padding: 20px 24px 0; flex-direction: column; gap: 6px; }
-  .accordion { margin-top: 16px; }
-  .card-matrix { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  .matrix-left { padding: 40px 24px 24px; justify-content: flex-start; }
-  .matrix-left h2 { margin-bottom: 20px; }
-  .matrix-tab { padding: 14px 16px; }
-  .matrix-caption { right: 16px; bottom: calc(var(--hud-h) + 16px); }
+  .slice-idle { flex-direction: row; align-items: center; justify-content: space-between; padding: 0 18px; }
+  .slice-idle-title { writing-mode: horizontal-tb; letter-spacing: 0.08em; font-size: 14px; }
+  .slice-num { font-size: 11px; }
+  .slice-reveal { left: 18px; right: 18px; bottom: 18px; }
+  .slice-reveal h3 { white-space: normal; font-size: 20px; }
+  .slice-reveal p { font-size: 13px; max-width: none; }
+  .fold-head { padding: 18px 16px 0; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .fold-head h2 { font-size: 22px; }
+  .accordion { margin-top: 14px; }
+  .card-matrix { grid-template-columns: 1fr; grid-template-rows: auto 280px; }
+  .matrix-left { padding: 28px 16px 16px; justify-content: flex-start; }
+  .matrix-left h2 { margin-bottom: 16px; font-size: clamp(24px, 6vw, 30px); }
+  .matrix-tab { padding: 14px 14px; }
+  .matrix-tab .tab-name { font-size: 16px; }
+  .matrix-tab p { font-size: 13px; }
+  .matrix-right { min-height: 280px; }
+  .matrix-caption { right: 12px; bottom: calc(var(--hud-h) + 12px); font-size: 10px; padding: 8px 10px; }
+  .hud { gap: 12px; padding: 0 12px; }
+  .hud-brand { font-size: 12px; letter-spacing: 0.16em; }
+  .hud-progress { max-width: 120px; }
   .hud-pct { display: none; }
+  .hud-nav { padding-left: 12px; gap: 6px; }
+  .hud-arrow { width: 36px; height: 36px; }
+}
+
+@media (max-width: 480px) {
+  .hero-stage { padding: 0 16px; }
+  .hero-eyebrow { font-size: 9px; letter-spacing: 0.28em; }
+  .hero-sub { font-size: 13px; }
+  .cek-form { flex-direction: column; }
+  .cek-input { letter-spacing: 0.22em; font-size: 16px; padding: 12px; }
+  .cek-btn { justify-content: center; padding: 12px 16px; font-size: 12px; }
+  .cek-steps { gap: 2px; }
+  .cek-dot { width: 22px; height: 22px; font-size: 10px; }
+  .cek-label { font-size: 9px; max-width: 64px; }
+  .slice.active { min-height: 300px; }
+  .matrix-tab .tab-name { font-size: 15px; }
 }
 @media (max-height: 540px) {
   .hero-title { font-size: clamp(40px, 10vh, 90px); }

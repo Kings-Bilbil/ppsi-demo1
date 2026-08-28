@@ -77,6 +77,10 @@ const MATRIX_TABS = [
 export default function NexusLanding() {
   const [activeSlice, setActiveSlice] = useState<string | null>(null);
   const [matrixKey, setMatrixKey] = useState("core");
+  const [hoverCapable, setHoverCapable] = useState(false);
+  useEffect(() => {
+    setHoverCapable(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<Status | null>(null);
@@ -375,10 +379,14 @@ export default function NexusLanding() {
               className={`slice ${activeSlice === s.id ? "active" : ""}`}
               type="button"
               aria-expanded={activeSlice === s.id ? "true" : "false"}
-              onMouseEnter={() => setActiveSlice(s.id)}
+              onMouseEnter={() => {
+                if (hoverCapable) setActiveSlice(s.id);
+              }}
               onFocus={() => setActiveSlice(s.id)}
               onClick={() => setActiveSlice((prev) => (prev === s.id ? null : s.id))}
-              onMouseLeave={() => setActiveSlice(null)}
+              onMouseLeave={() => {
+                if (hoverCapable) setActiveSlice(null);
+              }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="slice-img" src={s.img} alt={s.title} />
