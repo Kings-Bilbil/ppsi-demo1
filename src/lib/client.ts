@@ -1,4 +1,14 @@
-export class ApiError extends Error {}
+export class ApiError extends Error {
+  status?: number;
+  orderCount?: number;
+  requireForce?: boolean;
+  constructor(message: string, extra?: { status?: number; orderCount?: number; requireForce?: boolean }) {
+    super(message);
+    this.status = extra?.status;
+    this.orderCount = extra?.orderCount;
+    this.requireForce = extra?.requireForce;
+  }
+}
 
 export async function api<T = unknown>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -6,9 +16,13 @@ export async function api<T = unknown>(url: string, init?: RequestInit): Promise
     ...init,
     headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
   });
-  const data = (await res.json().catch(() => null)) as { error?: string } | null;
+  const data = (await res.json().catch(() => null)) as { error?: string; orderCount?: number; requireForce?: boolean } | null;
   if (!res.ok) {
-    throw new ApiError(data?.error || "Terjadi kesalahan. Coba lagi.");
+    throw new ApiError(data?.error || "Terjadi kesalahan. Coba lagi.", {
+      status: res.status,
+      orderCount: data?.orderCount,
+      requireForce: data?.requireForce,
+    });
   }
   return data as T;
 }

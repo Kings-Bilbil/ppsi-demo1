@@ -13,19 +13,27 @@ function randomCode(len = 6) {
 }
 
 async function main() {
-  await prisma.order.deleteMany();
-  await prisma.stock.deleteMany();
+  // Seed bersifat idempotent: tidak menghapus data yang sudah ada di database.
+  // Data hanya ditambahkan jika belum ada, sehingga mengubah kode tidak akan menghilangkan data produksi.
+  const seedStocks = [
+    { name: "Kemeja Formal", quantity: 24, unitPrice: 250000 },
+    { name: "Kaos Polos", quantity: 60, unitPrice: 85000 },
+    { name: "Jas Pengantin", quantity: 8, unitPrice: 2200000 },
+    { name: "Kebaya Modern", quantity: 15, unitPrice: 750000 },
+    { name: "Gamis", quantity: 18, unitPrice: 480000 },
+    { name: "Seragam Kantor", quantity: 32, unitPrice: 250000 },
+  ];
 
-  const stocks = await Promise.all(
-    [
-      { name: "Kemeja Formal", quantity: 24, unitPrice: 250000 },
-      { name: "Kaos Polos", quantity: 60, unitPrice: 85000 },
-      { name: "Jas Pengantin", quantity: 8, unitPrice: 2200000 },
-      { name: "Kebaya Modern", quantity: 15, unitPrice: 750000 },
-      { name: "Gamis", quantity: 18, unitPrice: 480000 },
-      { name: "Seragam Kantor", quantity: 32, unitPrice: 250000 },
-    ].map((s) => prisma.stock.create({ data: s }))
-  );
+  const stocks = [];
+  for (const s of seedStocks) {
+    const existing = await prisma.stock.findUnique({ where: { name: s.name } });
+    if (existing) {
+      stocks.push(existing);
+    } else {
+      const created = await prisma.stock.create({ data: s });
+      stocks.push(created);
+    }
+  }
 
   const byName = Object.fromEntries(stocks.map((s) => [s.name, s]));
 
@@ -78,6 +86,8 @@ async function main() {
   ];
 
   for (const o of orders) {
+    const exists = await prisma.order.findUnique({ where: { purchaseCode: o.purchaseCode } });
+    if (exists) continue;
     await prisma.order.create({
       data: {
         ...o,
@@ -85,7 +95,7 @@ async function main() {
         purchaseCode: o.purchaseCode ?? randomCode(6),
       },
     });
-    // decrement stock to reflect order
+    // decrement stock to reflect order (hanya untuk order baru)
     const st = byName[o.stockName];
     if (st) {
       await prisma.stock.update({ where: { id: st.id }, data: { quantity: st.quantity - o.quantity } });
@@ -116,6 +126,13 @@ async function main() {
   const now = Date.now();
   let i = history.length;
   for (const h of history) {
+    if (h.purchaseCode) {
+      const existsH = await prisma.order.findUnique({ where: { purchaseCode: h.purchaseCode } });
+      if (existsH) {
+        i--;
+        continue;
+      }
+    }
     await prisma.order.create({
       data: {
         ...h,

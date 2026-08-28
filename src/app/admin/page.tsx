@@ -135,6 +135,7 @@ export default function AdminHomePage() {
   };
 
   const totalUnits = stocks.reduce((sum, s) => sum + s.quantity, 0);
+  const isTotalLow = totalUnits <= 5 && stocks.length > 0;
 
   return (
     <div className="space-y-6">
@@ -148,7 +149,7 @@ export default function AdminHomePage() {
       {/* Stat tiles */}
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <StatTile label="Jenis Baju" value={String(stocks.length)} />
-        <StatTile label="Total Unit Stok" value={String(totalUnits)} />
+        <StatTile label="Total Unit Stok" value={String(totalUnits)} low={isTotalLow} />
         <StatTile label="Pesanan Aktif" value={String(orders?.length ?? 0)} />
         <StatTile label="Pesanan Selesai" value={String(completedCount)} accent />
       </div>
@@ -162,25 +163,28 @@ export default function AdminHomePage() {
           <p className="text-sm text-slate-400">Belum ada data stok. Tambahkan di menu Kelola Stok.</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {stocks.map((s) => (
-              <span
-                key={s.id}
-                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${
-                  s.quantity <= 5
-                    ? "border-amber-300 bg-amber-50 text-amber-800"
-                    : "border-slate-200 bg-slate-50 text-slate-700"
-                }`}
-              >
-                {s.name}
+            {stocks.map((s) => {
+              const isLow = s.quantity <= 5;
+              return (
                 <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                    s.quantity <= 5 ? "bg-amber-200/70" : "bg-white ring-1 ring-inset ring-slate-200"
+                  key={s.id}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${
+                    isLow
+                      ? "border-red-300 bg-red-50 text-red-700 animate-stock-blink"
+                      : "border-slate-200 bg-slate-50 text-slate-700"
                   }`}
                 >
-                  {s.quantity}
+                  {s.name}
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                      isLow ? "bg-red-200 text-red-800" : "bg-white ring-1 ring-inset ring-slate-200"
+                    }`}
+                  >
+                    {s.quantity}
+                  </span>
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
@@ -326,17 +330,18 @@ export default function AdminHomePage() {
   );
 }
 
-function StatTile({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function StatTile({ label, value, accent = false, low = false }: { label: string; value: string; accent?: boolean; low?: boolean }) {
   return (
     <div
       className={`rounded-2xl border p-5 shadow-sm ${
-        accent ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white"
+        low ? "border-red-300 bg-red-50 animate-stock-blink" : accent ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white"
       }`}
     >
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className={`mt-2 text-3xl font-semibold ${accent ? "text-emerald-700" : "text-slate-900"}`}>
+      <p className={`text-xs font-medium uppercase tracking-wide ${low ? "text-red-600" : "text-slate-500"}`}>{label}</p>
+      <p className={`mt-2 text-3xl font-semibold ${low ? "text-red-600" : accent ? "text-emerald-700" : "text-slate-900"}`}>
         {value}
       </p>
+      {low && <p className="mt-1 text-[11px] font-semibold text-red-600">Stok hampir habis!</p>}
     </div>
   );
 }

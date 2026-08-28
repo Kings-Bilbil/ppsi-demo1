@@ -10,7 +10,7 @@ datasource db {
 
 model Stock {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @unique
   quantity  Int      @default(0)
   unitPrice Float    @default(0)
   createdAt DateTime @default(now())

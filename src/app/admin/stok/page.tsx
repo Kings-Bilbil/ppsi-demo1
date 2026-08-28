@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { api } from "@/lib/client";
+import { ApiError, api } from "@/lib/client";
 import { formatDate, formatIDR } from "@/lib/format";
 import type { Stock } from "@/lib/types";
 import { usePolling } from "@/components/hooks";
@@ -10,6 +10,7 @@ import {
   EmptyState,
   Modal,
   Spinner,
+  btnDanger,
   btnGhost,
   btnPrimary,
   inputCls,
@@ -28,6 +29,10 @@ export default function KelolaStokPage() {
   const [formError, setFormError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Stock | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [blockedInfo, setBlockedInfo] = useState<{ stock: Stock; orderCount: number; error: string } | null>(null);
+  const [forceText, setForceText] = useState("");
+  const [forceDeleting, setForceDeleting] = useState(false);
+  const [showForceModal, setShowForceModal] = useState(false);
   const { show, node: toastNode } = useToast();
 
   const load = useCallback(async (isPoll = false) => {
@@ -65,19 +70,28 @@ export default function KelolaStokPage() {
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
     setFormError(null);
+    if (!name.trim()) {
+      setFormError("Nama jenis baju wajib diisi.");
+      return;
+    }
+    const priceNum = Number(unitPrice);
+    if (!unitPrice || Number.isNaN(priceNum) || priceNum <= 0) {
+      setFormError("Harga satuan harus lebih dari 0.");
+      return;
+    }
     setSaving(true);
     try {
       const priceVal = unitPrice === "" ? undefined : Number(unitPrice);
       if (editing) {
         await api(`/api/stock/${editing.id}`, {
           method: "PUT",
-          body: JSON.stringify({ name, quantity: quantity === "" ? undefined : Number(quantity), unitPrice: priceVal }),
+          body: JSON.stringify({ name: name.trim(), quantity: quantity === "" ? undefined : Number(quantity), unitPrice: priceVal }),
         });
         show("Stok berhasil diperbarui.");
       } else {
         await api("/api/stock", {
           method: "POST",
-          body: JSON.stringify({ name, quantity: Number(quantity), unitPrice: Number(unitPrice) }),
+          body: JSON.stringify({ name: name.trim(), quantity: Number(quantity), unitPrice: Number(unitPrice) }),
         });
         show("Jenis baju baru berhasil ditambahkan.");
       }
@@ -99,9 +113,41 @@ export default function KelolaStokPage() {
       setDeleteTarget(null);
       void load();
     } catch (e) {
-      show(e instanceof Error ? e.message : "Gagal menghapus.", "error");
+      const err = e as ApiError;
+      if (err.status === 409 && err.requireForce) {
+        setBlockedInfo({ stock: deleteTarget, orderCount: err.orderCount ?? 0, error: err.message });
+        setDeleteTarget(null);
+        setShowForceModal(false);
+        setForceText("");
+      } else {
+        show(e instanceof Error ? e.message : "Gagal menghapus.", "error");
+      }
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const confirmForceDelete = async () => {
+    if (!blockedInfo) return;
+    if (forceText !== "Hapus Stok") {
+      show('Ketik "Hapus Stok" dengan tepat.', "error");
+      return;
+    }
+    setForceDeleting(true);
+    try {
+      const res = await api<{ deletedOrders?: number }>(
+        `/api/stock/${blockedInfo.stock.id}?force=true`,
+        { method: "DELETE", body: JSON.stringify({ confirmText: "Hapus Stok" }) }
+      );
+      show(`"${blockedInfo.stock.name}" dan ${res.deletedOrders ?? blockedInfo.orderCount} pesanan terkait dihapus.`);
+      setBlockedInfo(null);
+      setShowForceModal(false);
+      setForceText("");
+      void load();
+    } catch (e) {
+      show(e instanceof Error ? e.message : "Gagal menghapus paksa.", "error");
+    } finally {
+      setForceDeleting(false);
     }
   };
 
@@ -150,7 +196,7 @@ export default function KelolaStokPage() {
                       <span
                         className={`inline-flex min-w-8 justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                           stock.quantity <= 5
-                            ? "bg-amber-100 text-amber-800"
+                            ? "bg-red-100 text-red-700 animate-stock-blink"
                             : "bg-blue-100 text-blue-700"
                         }`}
                       >
@@ -225,12 +271,12 @@ export default function KelolaStokPage() {
           </div>
           <div>
             <label htmlFor="harga-satuan" className="mb-1.5 block text-sm font-medium text-slate-700">
-              Harga Satuan (Rp)
+              Harga Satuan (Rp) <span className="text-red-500">*</span>
             </label>
             <input
               id="harga-satuan"
               type="number"
-              min={0}
+              min={0.01}
               step="any"
               value={unitPrice}
               onChange={(e) => setUnitPrice(e.target.value)}
@@ -238,6 +284,7 @@ export default function KelolaStokPage() {
               className={inputCls}
               required
             />
+            <p className="mt-1 text-xs text-slate-400">Harus lebih dari 0. Nama produk tidak boleh sama dengan yang sudah ada.</p>
           </div>
 
           {formError && (
@@ -273,6 +320,68 @@ export default function KelolaStokPage() {
           )
         }
       />
+
+      {/* Blocked delete info + opsi Tetap hapus */}
+      <Modal
+        open={blockedInfo !== null && !showForceModal}
+        onClose={() => setBlockedInfo(null)}
+        title="Tidak bisa menghapus stok"
+      >
+        {blockedInfo && (
+          <div className="space-y-4">
+            <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5 text-sm text-amber-800">
+              {blockedInfo.error}
+            </div>
+            <p className="text-sm text-slate-600">
+              Stok <strong className="text-slate-900">{blockedInfo.stock.name}</strong> masih dipakai oleh{" "}
+              <strong>{blockedInfo.orderCount}</strong> pesanan. Jika stok ini memang salah input dan harus dihapus,
+              semua pesanan terkait juga akan ikut terhapus permanen.
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setBlockedInfo(null)} className={btnGhost}>
+                Batal
+              </button>
+              <button onClick={() => setShowForceModal(true)} className={btnDanger}>
+                Tetap hapus stok
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Verifikasi ketik Hapus Stok */}
+      <Modal open={showForceModal} onClose={() => setShowForceModal(false)} title="Verifikasi hapus stok">
+        {blockedInfo && (
+          <div className="space-y-4">
+            <p className="text-sm text-slate-600">
+              Untuk menghapus <strong className="text-slate-900">{blockedInfo.stock.name}</strong> beserta{" "}
+              {blockedInfo.orderCount} pesanan terkait, ketik{" "}
+              <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-sm font-bold text-slate-900">Hapus Stok</span>{" "}
+              di bawah ini:
+            </p>
+            <input
+              value={forceText}
+              onChange={(e) => setForceText(e.target.value)}
+              placeholder="Ketik: Hapus Stok"
+              className={inputCls}
+              autoFocus
+            />
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowForceModal(false)} className={btnGhost} disabled={forceDeleting}>
+                Batal
+              </button>
+              <button
+                onClick={confirmForceDelete}
+                disabled={forceText !== "Hapus Stok" || forceDeleting}
+                className={btnDanger}
+              >
+                {forceDeleting && <Spinner className="h-4 w-4" />}
+                Hapus Permanen
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
