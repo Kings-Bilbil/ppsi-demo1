@@ -375,11 +375,6 @@ export default function LandingPage() {
                     </a>
                   </li>
                 ))}
-                <li className="pt-2">
-                  <a href="/login" className="text-slate-500 transition hover:text-slate-300 text-xs">
-                    Login Portal Admin
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
