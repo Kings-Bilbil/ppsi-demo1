@@ -269,7 +269,7 @@ export function PulseFitHero({
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.7 }}
-          className="relative z-10 w-full overflow-hidden py-6 select-none"
+          className="relative z-10 w-full overflow-hidden py-6 select-none touch-pan-y"
         >
           {/* Gradient Overlays for Edge Fading */}
           <div
@@ -287,16 +287,11 @@ export function PulseFitHero({
             }}
           />
 
-          {/* Draggable Outer Container (Allows Manual Swipe/Drag Without Stopping Auto-scroll) */}
-          <motion.div
-            className="flex w-full overflow-x-auto scrollbar-none cursor-grab active:cursor-grabbing"
-            drag="x"
-            dragConstraints={{ left: -2400, right: 0 }}
-            dragElastic={0.05}
-          >
-            {/* Auto-scrolling Continuous Marquee Track */}
+          {/* Infinite Auto-scroll Carousel (Drag disabled to prevent blank gap - swipe continues rotation) */}
+          <div className="flex w-full overflow-hidden select-none touch-pan-y">
+            {/* Auto-scrolling Continuous Marquee Track - seamless -50% loop */}
             <motion.div
-              className="flex items-center gap-6 pl-6 shrink-0"
+              className="flex items-center gap-6 pl-6 shrink-0 will-change-transform"
               animate={{
                 x: ["0%", "-50%"],
               }}
@@ -308,6 +303,7 @@ export function PulseFitHero({
                   ease: "linear",
                 },
               }}
+              style={{ willChange: "transform" }}
             >
               {carouselItems.map((program, index) => (
                 <div
@@ -344,7 +340,7 @@ export function PulseFitHero({
                 </div>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </section>
