@@ -23,8 +23,8 @@ export async function POST(req: Request) {
   if (quantity === undefined || quantity < 0) {
     return NextResponse.json({ error: "Jumlah stok harus berupa angka minimal 0." }, { status: 400 });
   }
-  if (unitPrice === undefined || unitPrice < 0) {
-    return NextResponse.json({ error: "Harga satuan tidak valid." }, { status: 400 });
+  if (unitPrice === undefined || unitPrice <= 0) {
+    return NextResponse.json({ error: "Harga satuan harus lebih dari 0." }, { status: 400 });
   }
 
   const all = await prisma.stock.findMany({ select: { name: true } });
