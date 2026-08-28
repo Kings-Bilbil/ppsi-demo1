@@ -13,7 +13,7 @@ import {
 } from "@/components/icons";
 import { DressArt, GamisArt, JacketArt, KebayaArt, NeedleLogo, ShirtArt, SpoolArt } from "@/components/GarmentArt";
 import CheckStatusForm from "@/components/CheckStatusForm";
-import { DemoOne } from "@/components/ui/horizon-hero-demo";
+import PulseFitHeroDemo from "@/components/ui/pulse-fit-hero-demo";
 
 const WA_LINK = "https://wa.me/6281234567890";
 
@@ -91,110 +91,8 @@ function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: 
 export default function LandingPage() {
   return (
     <main id="beranda" className="bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <a href="#beranda" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-sm">
-              <NeedleLogo className="h-5 w-5" />
-            </span>
-            <span className="font-display text-lg font-semibold tracking-wide text-slate-900">
-              Arunika <span className="text-brand">Tailor</span>
-            </span>
-          </a>
-          <nav className="hidden items-center gap-8 md:flex">
-            {NAV.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          <a
-            href="#cek-status"
-            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
-          >
-            Lacak Pesanan
-          </a>
-        </div>
-      </header>
-
-      {/* 3D Horizon Hero Section */}
-      <DemoOne />
-
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-stone-50 via-white to-white">
-        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-brand/10 blur-3xl" />
-        <div className="pointer-events-none absolute -left-32 top-64 h-72 w-72 rounded-full bg-rose-100 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/5 px-3 py-1 text-xs font-medium text-brand-dark">
-              <ScissorsIcon className="h-3.5 w-3.5" /> Penjahit Premium • Pontianak
-            </span>
-            <h1 className="mt-6 font-display text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl lg:text-[3.4rem]">
-              Penjahitan berkualitas untuk gaya yang{" "}
-              <span className="italic text-brand">khas Anda</span>
-            </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-500">
-              Dari kebaya pernikahan hingga seragam kantor — setiap potong kami kerjakan dengan presisi,
-              bahan pilihan, dan tenggat yang bisa Anda andalkan.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={WA_LINK}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-700"
-              >
-                <ChatIcon className="h-4 w-4" /> Pesan Sekarang
-              </a>
-              <a
-                href="#cek-status"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
-              >
-                Lacak Pesanan Saya
-              </a>
-            </div>
-            <dl className="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-slate-200 pt-6">
-              {[
-                ["12+", "Tahun Pengalaman"],
-                ["3.200+", "Pesanan Selesai"],
-                ["98%", "Pelanggan Puas"],
-              ].map(([value, label]) => (
-                <div key={label}>
-                  <dt className="sr-only">{label}</dt>
-                  <dd className="font-display text-2xl font-semibold text-slate-900">{value}</dd>
-                  <dd className="mt-1 text-xs text-slate-500">{label}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          <div className="relative mx-auto h-[380px] w-full max-w-lg sm:h-[460px]">
-            <div className="absolute left-0 top-6 flex h-56 w-44 rotate-[-6deg] items-center justify-center rounded-3xl bg-gradient-to-br from-rose-50 to-rose-100 shadow-lg ring-1 ring-black/5 sm:h-72 sm:w-60">
-              <DressArt className="h-28 w-28 text-rose-400 sm:h-36 sm:w-36" />
-            </div>
-            <div className="absolute right-0 top-24 flex h-52 w-44 rotate-[5deg] items-center justify-center rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-xl ring-1 ring-black/5 sm:h-64 sm:w-56">
-              <JacketArt className="h-26 w-26 text-slate-600 sm:h-32 sm:w-32" />
-            </div>
-            <div className="absolute bottom-0 left-10 flex h-44 w-48 rotate-[-2deg] items-center justify-center rounded-3xl bg-gradient-to-br from-amber-50 to-amber-100 shadow-lg ring-1 ring-black/5 sm:h-52 sm:w-56">
-              <KebayaArt className="h-24 w-24 text-brand sm:h-28 sm:w-28" />
-            </div>
-            <div className="absolute -left-2 bottom-16 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl ring-1 ring-black/5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-600">
-                <StarIcon className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-slate-900">4.9 / 5.0</p>
-                <p className="text-xs text-slate-500">dari 320+ ulasan</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* PulseFit / Framer Motion Hero Section */}
+      <PulseFitHeroDemo />
 
       {/* Layanan */}
       <section id="layanan" className="py-20 lg:py-28">
