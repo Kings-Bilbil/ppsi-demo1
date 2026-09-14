@@ -26,6 +26,7 @@ export default function AdminShell({ username, children }: { username: string; c
   const pathname = usePathname();
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
   const isActive = (href: string) =>
@@ -41,20 +42,22 @@ export default function AdminShell({ username, children }: { username: string; c
     }
   };
 
-  const sidebarContent = (
+  const renderSidebar = (collapsed: boolean) => (
     <div className="flex h-full flex-col bg-[#051C12] text-white">
       {/* Brand */}
-      <div className="flex h-[80px] items-center gap-3 px-6">
-        <span className="flex h-8 w-8 items-center justify-center rounded bg-[#B4F105] text-[#051C12]">
+      <div className={`flex h-[80px] items-center gap-3 ${collapsed ? "justify-center px-0" : "px-6"}`}>
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-[#B4F105] text-[#051C12]">
           <NeedleLogo className="h-5 w-5" />
         </span>
-        <span className="font-display text-lg font-bold tracking-wide text-white">Spark Arunika</span>
+        {!collapsed && <span className="font-display text-lg font-bold tracking-wide text-white whitespace-nowrap">Spark Arunika</span>}
       </div>
 
       {/* Menu */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="mb-2 px-2 text-[10px] font-bold uppercase tracking-widest text-[#879A91]">Menu</div>
-        <nav className="space-y-1">
+      <div className={`flex-1 overflow-y-auto py-6 ${collapsed ? "px-3" : "px-4"}`}>
+        <div className={`mb-2 px-2 text-[10px] font-bold uppercase tracking-widest text-[#879A91] ${collapsed ? "text-center" : ""}`}>
+          {collapsed ? "..." : "Menu"}
+        </div>
+        <nav className="space-y-2">
           {NAV.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -63,15 +66,18 @@ export default function AdminShell({ username, children }: { username: string; c
                 key={item.href}
                 href={item.href}
                 prefetch
+                title={collapsed ? item.label : undefined}
                 onClick={() => setDrawerOpen(false)}
-                className={`flex items-center gap-3 rounded-[10px] px-3 py-3 text-sm font-semibold transition-all ${
+                className={`flex items-center rounded-[10px] transition-all ${
+                  collapsed ? "justify-center py-3" : "gap-3 px-3 py-3"
+                } text-sm font-semibold ${
                   active
                     ? "bg-[#1A3E30] text-white shadow-sm"
                     : "text-[#879A91] hover:bg-[#1A3E30]/50 hover:text-white"
                 }`}
               >
-                <Icon className={`h-5 w-5 ${active ? "text-[#B4F105]" : "text-[#879A91]"}`} />
-                {item.label}
+                <Icon className={`h-5 w-5 shrink-0 ${active ? "text-[#B4F105]" : "text-[#879A91]"}`} />
+                {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
               </Link>
             );
           })}
@@ -80,23 +86,34 @@ export default function AdminShell({ username, children }: { username: string; c
 
       {/* Profile Footer */}
       <div className="p-4">
-        <div className="flex items-center gap-3 rounded-xl bg-[#072F1F] p-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1A3E30] text-sm font-semibold text-[#B4F105]">
-            {username.charAt(0).toUpperCase()}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-white capitalize">{username}</p>
-            <p className="text-xs text-[#879A91]">Administrator</p>
+        {collapsed ? (
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-[#072F1F] py-4">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1A3E30] text-sm font-semibold text-[#B4F105]">
+              {username.charAt(0).toUpperCase()}
+            </span>
+            <button onClick={logout} disabled={loggingOut} title="Keluar" className="text-red-400 hover:text-red-300 transition-colors">
+              <LogoutIcon className="h-5 w-5" />
+            </button>
           </div>
-          <button
-            onClick={logout}
-            disabled={loggingOut}
-            title="Keluar"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-400 transition hover:bg-red-500 hover:text-white disabled:opacity-50"
-          >
-            <LogoutIcon className="h-4 w-4" />
-          </button>
-        </div>
+        ) : (
+          <div className="flex items-center gap-3 rounded-xl bg-[#072F1F] p-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1A3E30] text-sm font-semibold text-[#B4F105]">
+              {username.charAt(0).toUpperCase()}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-bold text-white capitalize">{username}</p>
+              <p className="text-xs text-[#879A91]">Administrator</p>
+            </div>
+            <button
+              onClick={logout}
+              disabled={loggingOut}
+              title="Keluar"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-400 transition hover:bg-red-500 hover:text-white disabled:opacity-50"
+            >
+              <LogoutIcon className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -104,8 +121,8 @@ export default function AdminShell({ username, children }: { username: string; c
   return (
     <div className="min-h-screen bg-[#F4F6F5] font-sans text-[#0B130F] selection:bg-[#B4F105]/30">
       {/* Sidebar desktop */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[280px] lg:block">
-        {sidebarContent}
+      <aside className={`fixed inset-y-0 left-0 z-30 hidden lg:block transition-all duration-300 ${isCollapsed ? "w-[90px]" : "w-[280px]"}`}>
+        {renderSidebar(isCollapsed)}
       </aside>
 
       {/* Topbar mobile */}
@@ -124,9 +141,18 @@ export default function AdminShell({ username, children }: { username: string; c
       </header>
 
       {/* Topbar Desktop */}
-      <header className="hidden h-[80px] items-center justify-end border-b border-[#E9EFEF] bg-white px-8 lg:flex lg:ml-[280px]">
+      <header className={`hidden h-[80px] items-center justify-between border-b border-[#E9EFEF] bg-white px-8 lg:flex transition-all duration-300 ${isCollapsed ? "lg:ml-[90px]" : "lg:ml-[280px]"}`}>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 pl-4">
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)} 
+            className="rounded-lg p-2 text-[#6C7E75] hover:bg-[#F4F6F5] transition-colors"
+            title="Toggle Sidebar"
+          >
+            <MenuIcon className="h-6 w-6" />
+          </button>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 border-l border-[#E9EFEF] pl-4">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1A3E30] text-sm font-semibold text-[#B4F105]">
               {username.charAt(0).toUpperCase()}
             </span>
@@ -147,12 +173,12 @@ export default function AdminShell({ username, children }: { username: string; c
             >
               <XIcon className="h-6 w-6" />
             </button>
-            {sidebarContent}
+            {renderSidebar(false)}
           </aside>
         </div>
       )}
 
-      <main className="lg:pl-[280px]">
+      <main className={`transition-all duration-300 ${isCollapsed ? "lg:pl-[90px]" : "lg:pl-[280px]"}`}>
         <div className="mx-auto max-w-7xl p-4 md:p-8 lg:px-8 lg:py-6">{children}</div>
       </main>
     </div>
