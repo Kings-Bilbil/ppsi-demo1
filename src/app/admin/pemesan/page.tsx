@@ -23,9 +23,9 @@ import {
 } from "@/components/icons";
 
 // Common classes for dark theme
-const btnPrimary = "inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:opacity-60";
-const btnGhost = "inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-neutral-400 transition hover:bg-neutral-800 hover:text-neutral-100 disabled:opacity-60";
-const inputCls = "w-full rounded-lg border border-neutral-800 bg-neutral-900/50 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors";
+const btnPrimary = "inline-flex items-center gap-2 rounded-lg bg-[#B4F105] px-4 py-2 text-sm font-semibold text-[#051C12] transition hover:bg-amber-400 disabled:opacity-60";
+const btnGhost = "inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-[#6C7E75] transition hover:bg-[#E9EFEF] hover:text-[#0B130F] disabled:opacity-60";
+const inputCls = "w-full rounded-lg border border-[#E9EFEF] bg-white px-4 py-2.5 text-sm text-[#0B130F] placeholder:text-[#879A91] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105] transition-colors";
 
 interface FormState {
   buyerName: string;
@@ -50,14 +50,14 @@ const PAYMENT_STATUSES = ["Belum DP", "Sudah DP", "Lunas"];
 const getPaymentBadge = (status: string) => {
   switch (status) {
     case "Lunas": return "bg-emerald-500/10 text-emerald-500 ring-emerald-500/20";
-    case "Sudah DP": return "bg-amber-500/10 text-amber-500 ring-amber-500/20";
+    case "Sudah DP": return "bg-[#B4F105]/10 text-[#072F1F] ring-[#B4F105]/20";
     default: return "bg-red-500/10 text-red-500 ring-red-500/20";
   }
 };
 
 const getOrderStatusBadge = (status: string) => {
   if (status === "Selesai") return "bg-emerald-500/10 text-emerald-500 ring-emerald-500/20";
-  if (status === "Perencanaan") return "bg-neutral-500/10 text-neutral-400 ring-neutral-500/20";
+  if (status === "Perencanaan") return "bg-neutral-500/10 text-[#6C7E75] ring-neutral-500/20";
   return "bg-blue-500/10 text-blue-400 ring-blue-500/20";
 };
 
@@ -177,8 +177,8 @@ export default function DataPemesanPage() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-display font-semibold tracking-wide text-neutral-100">Data Pemesan</h1>
-          <p className="mt-1 text-sm text-neutral-400">Kelola seluruh pesanan dan status pembayarannya.</p>
+          <h1 className="text-2xl font-display font-semibold tracking-wide text-[#0B130F]">Data Pemesan</h1>
+          <p className="mt-1 text-sm text-[#6C7E75]">Kelola seluruh pesanan dan status pembayarannya.</p>
         </div>
         <button onClick={openAdd} className={btnPrimary} disabled={stocks.length === 0}>
           <PlusIcon className="h-4 w-4" /> Tambah Pesanan
@@ -186,27 +186,27 @@ export default function DataPemesanPage() {
       </div>
 
       {stocks.length === 0 && orders !== null && (
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-500">
+        <div className="rounded-xl border border-[#B4F105]/30 bg-[#B4F105]/10 px-4 py-3 text-sm text-[#072F1F]">
           Tambahkan minimal satu jenis baju di menu Kelola Stok sebelum membuat pesanan.
         </div>
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-xl shadow-xl">
+      <div className="overflow-hidden rounded-2xl border border-[#E9EFEF] bg-white backdrop-blur-xl shadow-xl">
         {orders === null ? (
-          <div className="flex items-center justify-center py-24 text-neutral-500">
-            <Spinner className="h-7 w-7 text-amber-500" />
+          <div className="flex items-center justify-center py-24 text-[#879A91]">
+            <Spinner className="h-7 w-7 text-[#072F1F]" />
           </div>
         ) : orders.length === 0 ? (
           <EmptyState
-            icon={<UsersIcon className="h-10 w-10 text-amber-500/50" />}
+            icon={<UsersIcon className="h-10 w-10 text-[#072F1F]/50" />}
             title="Belum ada data pemesan"
             subtitle="Klik 'Tambah Pesanan' untuk mencatat pesanan pertama."
           />
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-neutral-800 text-sm">
+            <table className="min-w-full divide-y divide-[#E9EFEF] text-sm">
               <thead>
-                <tr className="bg-neutral-900 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                <tr className="bg-[#F4F6F5] text-left text-xs font-semibold uppercase tracking-wider text-[#879A91]">
                   <th className="px-5 py-4">Pembeli</th>
                   <th className="px-5 py-4">Pesanan</th>
                   <th className="px-5 py-4">Total & DP</th>
@@ -215,20 +215,20 @@ export default function DataPemesanPage() {
                   <th className="px-5 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-800/50">
+              <tbody className="divide-y divide-[#E9EFEF]">
                 {orders.map((order) => (
-                  <tr key={order.id} className="transition-colors hover:bg-neutral-800/30">
+                  <tr key={order.id} className="transition-colors hover:bg-[#F4F6F5]">
                     <td className="px-5 py-4">
-                      <div className="font-medium text-neutral-200">{order.buyerName}</div>
-                      <div className="text-[10px] tracking-widest text-neutral-500 mt-1 uppercase">{order.purchaseCode}</div>
+                      <div className="font-medium text-[#0B130F]">{order.buyerName}</div>
+                      <div className="text-[10px] tracking-widest text-[#879A91] mt-1 uppercase">{order.purchaseCode}</div>
                     </td>
                     <td className="px-5 py-4">
-                      <div className="text-neutral-300">{order.stockName}</div>
-                      <div className="text-xs text-neutral-500">{order.quantity} pcs</div>
+                      <div className="text-[#6C7E75]">{order.stockName}</div>
+                      <div className="text-xs text-[#879A91]">{order.quantity} pcs</div>
                     </td>
                     <td className="px-5 py-4">
-                      <div className="font-medium text-amber-500">{formatIDR(order.totalPrice)}</div>
-                      <div className="text-xs text-neutral-400 mt-0.5">DP: {formatIDR(order.amountPaid || 0)}</div>
+                      <div className="font-medium text-[#072F1F]">{formatIDR(order.totalPrice)}</div>
+                      <div className="text-xs text-[#6C7E75] mt-0.5">DP: {formatIDR(order.amountPaid || 0)}</div>
                     </td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ring-1 ring-inset ${getOrderStatusBadge(order.status)}`}>
@@ -245,21 +245,21 @@ export default function DataPemesanPage() {
                         <button
                           onClick={() => setDetail(order)}
                           title="Lihat Detail"
-                          className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-blue-500/10 hover:text-blue-400"
+                          className="rounded-lg p-2 text-[#879A91] transition-colors hover:bg-blue-500/10 hover:text-blue-400"
                         >
                           <EyeIcon className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => openEdit(order)}
                           title="Edit"
-                          className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-amber-500/10 hover:text-amber-500"
+                          className="rounded-lg p-2 text-[#879A91] transition-colors hover:bg-[#B4F105]/10 hover:text-[#072F1F]"
                         >
                           <PencilIcon className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => setDeleteTarget(order)}
                           title="Hapus"
-                          className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-red-500/10 hover:text-red-500"
+                          className="rounded-lg p-2 text-[#879A91] transition-colors hover:bg-red-500/10 hover:text-red-500"
                         >
                           <TrashIcon className="h-4 w-4" />
                         </button>
@@ -281,7 +281,7 @@ export default function DataPemesanPage() {
       >
         <form onSubmit={submitForm} className="space-y-4">
           <div>
-            <label htmlFor="buyer-name" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+            <label htmlFor="buyer-name" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
               Nama Pembeli
             </label>
             <input
@@ -296,7 +296,7 @@ export default function DataPemesanPage() {
           </div>
 
           <div>
-            <label htmlFor="stock-select" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+            <label htmlFor="stock-select" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
               Jenis Baju
             </label>
             <select
@@ -317,7 +317,7 @@ export default function DataPemesanPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="qty" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label htmlFor="qty" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Jumlah (pcs)
               </label>
               <input
@@ -332,10 +332,10 @@ export default function DataPemesanPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Total Harga
               </label>
-              <div className="flex h-[42px] items-center rounded-lg border border-neutral-800 bg-neutral-900/50 px-3 text-sm font-semibold text-amber-500">
+              <div className="flex h-[42px] items-center rounded-lg border border-[#E9EFEF] bg-white px-3 text-sm font-semibold text-[#072F1F]">
                 {(() => {
                   const st = stocks.find((s) => s.id === form.stockId);
                   const qty = Number(form.quantity);
@@ -348,7 +348,7 @@ export default function DataPemesanPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="paymentStatus" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label htmlFor="paymentStatus" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Status Bayar
               </label>
               <select
@@ -361,7 +361,7 @@ export default function DataPemesanPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="amountPaid" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label htmlFor="amountPaid" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Uang Diterima (Rp)
               </label>
               <input
@@ -382,7 +382,7 @@ export default function DataPemesanPage() {
                     const qty = Number(form.quantity);
                     if (st && qty) setForm(f => ({ ...f, amountPaid: String(st.unitPrice * qty) }));
                   }}
-                  className="mt-1 text-[10px] text-amber-500 hover:underline"
+                  className="mt-1 text-[10px] text-[#072F1F] hover:underline"
                 >
                   Set Penuh
                 </button>
@@ -391,7 +391,7 @@ export default function DataPemesanPage() {
           </div>
 
           <div>
-            <label htmlFor="desc" className="mb-1.5 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+            <label htmlFor="desc" className="mb-1.5 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
               Deskripsi <span className="font-normal text-neutral-600">(opsional)</span>
             </label>
             <textarea
@@ -435,11 +435,11 @@ export default function DataPemesanPage() {
           <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
             <CheckIcon className="h-7 w-7" />
           </span>
-          <p className="mt-5 text-sm text-neutral-400">Kode pelacakan pesanan:</p>
-          <p className="mt-3 rounded-xl bg-neutral-900 border border-neutral-800 px-4 py-4 font-mono text-3xl font-bold tracking-[0.35em] text-amber-500 select-all">
+          <p className="mt-5 text-sm text-[#6C7E75]">Kode pelacakan pesanan:</p>
+          <p className="mt-3 rounded-xl bg-[#F4F6F5] border border-[#E9EFEF] px-4 py-4 font-mono text-3xl font-bold tracking-[0.35em] text-[#072F1F] select-all">
             {createdCode}
           </p>
-          <p className="mt-4 text-xs leading-relaxed text-neutral-500">
+          <p className="mt-4 text-xs leading-relaxed text-[#879A91]">
             Berikan kode ini kepada pembeli untuk melacak status pesanan secara mandiri di halaman depan.
           </p>
           <div className="mt-6 flex justify-center gap-3">
@@ -466,13 +466,13 @@ export default function DataPemesanPage() {
               ["Total Harga", formatIDR(detail.totalPrice)],
               ["Uang Masuk", formatIDR(detail.amountPaid || 0)],
               ["Sisa Tagihan", formatIDR(detail.totalPrice - (detail.amountPaid || 0))],
-              ["Kode Tracking", <span key="3" className="font-mono tracking-widest text-amber-500 select-all">{detail.purchaseCode}</span>],
+              ["Kode Tracking", <span key="3" className="font-mono tracking-widest text-[#072F1F] select-all">{detail.purchaseCode}</span>],
               ["Waktu Order", formatDateTime(detail.createdAt)],
               ["Catatan", detail.description || "-"],
             ].map(([label, value], i) => (
-              <div key={i} className="flex items-start justify-between gap-6 border-b border-neutral-800/50 pb-3 last:border-0">
-                <dt className="shrink-0 text-neutral-500 text-xs uppercase tracking-wide mt-0.5">{label}</dt>
-                <dd className="text-right font-medium text-neutral-200">
+              <div key={i} className="flex items-start justify-between gap-6 border-b border-[#E9EFEF] pb-3 last:border-0">
+                <dt className="shrink-0 text-[#879A91] text-xs uppercase tracking-wide mt-0.5">{label}</dt>
+                <dd className="text-right font-medium text-[#0B130F]">
                   {value}
                 </dd>
               </div>
@@ -490,8 +490,8 @@ export default function DataPemesanPage() {
         tone="danger"
         message={
           deleteTarget && (
-            <span className="text-neutral-400">
-              Data atas nama <strong className="text-neutral-100">{deleteTarget.buyerName}</strong> akan
+            <span className="text-[#6C7E75]">
+              Data atas nama <strong className="text-[#0B130F]">{deleteTarget.buyerName}</strong> akan
               dihapus permanen.
             </span>
           )

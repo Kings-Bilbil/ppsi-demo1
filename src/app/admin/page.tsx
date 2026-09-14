@@ -181,30 +181,30 @@ export default function AdminHomePage() {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-semibold tracking-wide text-neutral-100">Dashboard</h1>
-          <p className="mt-1 text-sm text-neutral-400">Pantau performa bisnis, stok, dan alur pesanan Arunika Tailor.</p>
+          <h1 className="text-3xl font-display font-semibold tracking-wide text-[#0B130F]">Dashboard</h1>
+          <p className="mt-1 text-sm text-[#6C7E75]">Pantau performa bisnis, stok, dan alur pesanan secara real-time.</p>
         </div>
       </div>
 
       {/* TOP AREA: Quick Info Stat Cards (Spark Admin Style) */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Alert Card */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 p-6 shadow-lg shadow-amber-500/20 text-neutral-950">
+        <div className="relative overflow-hidden rounded-[20px] bg-[#072F1F] p-6 shadow-md text-white">
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div>
-              <span className="inline-block rounded-full bg-neutral-950/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-50 backdrop-blur-md">
+              <span className="inline-block rounded-full bg-[#1A3E30] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#B4F105]">
                 Pesanan Aktif
               </span>
               <div className="mt-4 text-5xl font-display font-bold tracking-tight">{totalPemesananAktif}</div>
-              <div className="mt-2 font-medium text-amber-950/80">Pesanan sedang dalam proses produksi.</div>
+              <div className="mt-2 font-medium text-[#879A91]">Pesanan sedang dalam proses produksi.</div>
             </div>
-            <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-neutral-950">
+            <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[#B4F105]">
               <span>Kelola Pesanan</span>
               <span className="text-lg">→</span>
             </div>
           </div>
           {/* Background shape mimicking Spark Admin asterik/star */}
-          <svg className="absolute -right-8 -top-8 z-0 h-40 w-40 text-amber-400/50" viewBox="0 0 100 100" fill="currentColor">
+          <svg className="absolute -right-8 -top-8 z-0 h-40 w-40 text-[#B4F105]/20" viewBox="0 0 100 100" fill="currentColor">
             <g transform="translate(50,50)">
               <rect x="-6" y="-45" width="12" height="90" rx="6" ry="6" />
               <rect x="-6" y="-45" width="12" height="90" rx="6" ry="6" transform="rotate(60)" />
@@ -214,26 +214,26 @@ export default function AdminHomePage() {
         </div>
 
         {/* Total Stock */}
-        <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl hover:border-neutral-700 transition-colors">
+        <div className="flex h-full flex-col justify-between rounded-[20px] border border-[#E9EFEF] bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Total Stok Tersedia</span>
-            <div className="mt-3 text-4xl font-display font-bold text-neutral-100">{totalStok} <span className="text-lg text-neutral-500">pcs</span></div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6C7E75]">Total Stok Tersedia</span>
+            <div className="mt-3 text-4xl font-display font-bold text-[#0B130F]">{totalStok} <span className="text-lg text-[#6C7E75]">pcs</span></div>
           </div>
           <div className="mt-6">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600">
               Lacak di Kelola Stok
             </span>
           </div>
         </div>
 
         {/* Total Completed */}
-        <div className="flex h-full flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl hover:border-neutral-700 transition-colors">
+        <div className="flex h-full flex-col justify-between rounded-[20px] border border-[#E9EFEF] bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Pesanan Selesai</span>
-            <div className="mt-3 text-4xl font-display font-bold text-emerald-500">{completedCount} <span className="text-lg text-neutral-500">trx</span></div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#6C7E75]">Pesanan Selesai</span>
+            <div className="mt-3 text-4xl font-display font-bold text-[#0B130F]">{completedCount} <span className="text-lg text-[#6C7E75]">trx</span></div>
           </div>
           <div className="mt-6">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#DCFCE7] px-3 py-1.5 text-xs font-medium text-[#22C55E]">
               Riwayat Transaksi
             </span>
           </div>
@@ -242,107 +242,27 @@ export default function AdminHomePage() {
 
       {/* Financial Summary */}
       <div>
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-neutral-500">Ringkasan Keuangan</h2>
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-[#6C7E75]">Ringkasan Keuangan</h2>
         <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-          <StatTile label="Total Modal Produksi" value={formatIDR(totalModal)} accentColor="text-rose-500" />
-          <StatTile label="Proyeksi Pendapatan" value={formatIDR(totalRevenue)} accentColor="text-blue-500" />
-          <StatTile label="Proyeksi Keuntungan" value={formatIDR(totalProfit)} accentColor="text-emerald-500" />
-          <StatTile label="Saldo Kas (Masuk)" value={formatIDR(currentBalance)} accentColor="text-amber-500" highlight />
+          <StatTile label="Total Modal Produksi" value={formatIDR(totalModal)} accentColor="text-[#EF4444]" />
+          <StatTile label="Proyeksi Pendapatan" value={formatIDR(totalRevenue)} accentColor="text-blue-600" />
+          <StatTile label="Proyeksi Keuntungan" value={formatIDR(totalProfit)} accentColor="text-[#22C55E]" />
+          <StatTile label="Saldo Kas (Masuk)" value={formatIDR(currentBalance)} accentColor="text-[#F97316]" highlight />
         </div>
       </div>
 
-      {/* Charts & Details Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl">
-            <h2 className="text-sm font-semibold text-neutral-200 mb-6 uppercase tracking-wider">Perbandingan Modal vs Pendapatan</h2>
-            {orders && stocks ? <FinancialBarChart orders={orders} stocks={stocks} /> : <div className="h-72 flex items-center justify-center"><Spinner className="w-6 h-6 text-amber-500" /></div>}
-          </div>
-
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-neutral-200 uppercase tracking-wider">Ketersediaan Stok per Barang</h2>
-            </div>
-            {stocks.length === 0 ? (
-              <p className="text-sm text-neutral-500 py-4">Belum ada data stok.</p>
-            ) : (
-              <div className="space-y-5">
-                {stocks.map(stock => {
-                  const maxEstim = Math.max(100, stock.quantity + 20); // Arbitrary max for progress bar
-                  const percent = Math.min(100, Math.round((stock.quantity / maxEstim) * 100));
-                  return (
-                    <div key={stock.id}>
-                      <div className="mb-2 flex justify-between text-sm">
-                        <span className="font-medium text-neutral-300">{stock.name}</span>
-                        <span className="font-bold text-neutral-100">{stock.quantity} pcs</span>
-                      </div>
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-800/80">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-500 ${stock.quantity <= 5 ? "bg-red-500" : "bg-amber-500"}`} 
-                          style={{ width: `${percent}%` }} 
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Right Column */}
-        <div className="flex flex-col gap-6">
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl flex flex-col">
-            <h2 className="text-sm font-semibold text-neutral-200 mb-6 uppercase tracking-wider">Statistik Status Pembayaran</h2>
-            {orders ? <PaymentStatusPieChart orders={orders} /> : <div className="h-[250px] flex items-center justify-center"><Spinner className="w-6 h-6 text-amber-500" /></div>}
-            
-            <div className="mt-8 space-y-4 border-t border-neutral-800/60 pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
-                  <span className="text-sm font-medium text-neutral-300">Lunas</span>
-                </div>
-                <span className="text-base font-bold text-neutral-100">{totalLunas}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="h-3 w-3 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></span>
-                  <span className="text-sm font-medium text-neutral-300">Sudah DP</span>
-                </div>
-                <span className="text-base font-bold text-neutral-100">{totalSudahDP}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="h-3 w-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></span>
-                  <span className="text-sm font-medium text-neutral-300">Belum DP</span>
-                </div>
-                <span className="text-base font-bold text-neutral-100">{totalBelumDP}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl bg-neutral-800/40 p-6 text-center border border-neutral-800/80">
-            <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-2">Perhatian</p>
-            <p className="text-sm text-neutral-300 leading-relaxed">
-              Pastikan Anda mengupdate status pada papan pesanan secara berkala agar pelanggan mendapatkan informasi terkini.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Kanban */}
-      <section className="pt-6 border-t border-neutral-800/80 mt-8">
+      {/* Kanban (Moved here as requested: under financials) */}
+      <section className="mt-8 border-t border-[#E9EFEF] pt-6">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-display font-semibold tracking-wide text-neutral-100">Papan Alur Produksi (Kanban)</h2>
-          <p className="hidden text-xs tracking-wider text-neutral-500 uppercase sm:block">
+          <h2 className="text-xl font-display font-semibold tracking-wide text-[#0B130F]">Papan Alur Produksi (Kanban)</h2>
+          <p className="hidden text-xs tracking-wider text-[#6C7E75] uppercase sm:block">
             Tarik kartu antar kolom untuk mengubah status
           </p>
         </div>
 
         {orders === null ? (
-          <div className="flex items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/50 py-32 text-neutral-400 shadow-sm">
-            <Spinner className="h-8 w-8 text-amber-500" />
+          <div className="flex items-center justify-center rounded-[20px] border border-[#E9EFEF] bg-white py-32 text-[#879A91] shadow-sm">
+            <Spinner className="h-8 w-8 text-[#B4F105]" />
           </div>
         ) : (
           <DragDropContext
@@ -358,16 +278,16 @@ export default function AdminHomePage() {
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className={`flex min-h-[300px] flex-col rounded-2xl p-4 transition-colors ${
-                        snapshot.isDraggingOver ? "bg-amber-500/5 border border-amber-500/20" : "bg-neutral-900/40 border border-neutral-800"
+                      className={`flex min-h-[300px] flex-col rounded-[20px] p-4 transition-colors ${
+                        snapshot.isDraggingOver ? "bg-[#B4F105]/10 border border-[#B4F105]/30" : "bg-white border border-[#E9EFEF] shadow-sm"
                       }`}
                     >
                       <div className="mb-4 flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <span className={`h-2.5 w-2.5 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.2)] ${STATUS_STYLES[status].bar.replace('bg-', 'bg-')}`} />
-                          <h3 className="text-sm font-semibold tracking-wide text-neutral-200">{status}</h3>
+                          <span className={`h-2.5 w-2.5 rounded-full ${STATUS_STYLES[status].bar.replace('bg-', 'bg-')}`} />
+                          <h3 className="text-sm font-bold tracking-wide text-[#0B130F]">{status}</h3>
                         </div>
-                        <span className="rounded-full bg-neutral-800 px-2.5 py-0.5 text-xs font-semibold text-neutral-400 ring-1 ring-inset ring-neutral-700">
+                        <span className="rounded-full bg-[#F4F6F5] px-2.5 py-0.5 text-xs font-semibold text-[#6C7E75] ring-1 ring-inset ring-[#E9EFEF]">
                           {columns.get(status)?.length ?? 0}
                         </span>
                       </div>
@@ -382,20 +302,20 @@ export default function AdminHomePage() {
                                   ref={dragProvided.innerRef}
                                   {...dragProvided.draggableProps}
                                   {...dragProvided.dragHandleProps}
-                                  className={`relative rounded-xl border border-neutral-800 bg-neutral-950 p-4 transition-all ${
+                                  className={`relative rounded-xl border border-[#E9EFEF] bg-[#F4F6F5] p-4 transition-all ${
                                     dragSnapshot.isDragging
-                                      ? "cursor-grabbing shadow-[0_10px_30px_rgba(0,0,0,0.5)] ring-1 ring-amber-500/50"
-                                      : "cursor-grab hover:border-neutral-700 hover:shadow-lg"
+                                      ? "cursor-grabbing shadow-[0_10px_30px_rgba(11,19,15,0.15)] ring-1 ring-[#B4F105]"
+                                      : "cursor-grab hover:border-[#B4F105]/50 hover:shadow-md"
                                   } ${isMutating ? "opacity-50 grayscale pointer-events-none" : ""}`}
                                 >
                                   {isMutating && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/50 rounded-xl z-10 backdrop-blur-[1px]">
-                                      <Spinner className="h-6 w-6 text-amber-500" />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-xl z-10 backdrop-blur-[1px]">
+                                      <Spinner className="h-6 w-6 text-[#B4F105]" />
                                     </div>
                                   )}
                                   
                                   <div className="flex justify-between items-start mb-2">
-                                    <p className="truncate pr-2 text-sm font-semibold text-neutral-100">
+                                    <p className="truncate pr-2 text-sm font-bold text-[#0B130F]">
                                       {order.buyerName}
                                     </p>
                                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ring-1 ring-inset ${getPaymentBadge(order.paymentStatus || "Belum DP")}`}>
@@ -403,14 +323,14 @@ export default function AdminHomePage() {
                                     </span>
                                   </div>
                                   
-                                  <p className="text-xs text-neutral-400">
-                                    {order.stockName} • <span className="text-neutral-300">{order.quantity} pcs</span>
+                                  <p className="text-xs text-[#6C7E75]">
+                                    {order.stockName} • <span className="text-[#0B130F] font-semibold">{order.quantity} pcs</span>
                                   </p>
-                                  <p className="mt-2 text-sm font-semibold tracking-wide text-amber-500">
+                                  <p className="mt-2 text-sm font-bold tracking-wide text-[#072F1F]">
                                     {formatIDR(order.totalPrice)}
                                   </p>
                                   
-                                  <p className="mt-3 inline-block rounded-md bg-neutral-900 px-2 py-1 font-mono text-[10px] tracking-widest text-neutral-500 select-all border border-neutral-800">
+                                  <p className="mt-3 inline-block rounded-md bg-white px-2 py-1 font-mono text-[10px] tracking-widest text-[#879A91] border border-[#E9EFEF] select-all">
                                     {order.purchaseCode}
                                   </p>
 
@@ -418,7 +338,7 @@ export default function AdminHomePage() {
                                     <select
                                       value={order.status}
                                       onChange={(e) => onMobileStatusChange(order, e.target.value)}
-                                      className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-2 py-1.5 text-xs text-neutral-300 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                                      className="w-full rounded-lg border border-[#E9EFEF] bg-white px-2 py-1.5 text-xs text-[#0B130F] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105]"
                                     >
                                       {STATUSES.map((s) => (
                                         <option key={s} value={s}>
@@ -435,8 +355,8 @@ export default function AdminHomePage() {
                         {provided.placeholder}
 
                         {(columns.get(status)?.length ?? 0) === 0 && !snapshot.isDraggingOver && (
-                          <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-neutral-800/60 p-4">
-                            <p className="text-center text-xs text-neutral-600">
+                          <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-[#E9EFEF] p-4">
+                            <p className="text-center text-xs text-[#879A91]">
                               {status === "Selesai" ? (
                                 <span className="inline-flex items-center gap-1.5">
                                   <CheckIcon className="h-4 w-4" /> Letakkan di sini
@@ -458,13 +378,93 @@ export default function AdminHomePage() {
       </section>
 
       {orders !== null && orders.length === 0 && (
-        <div className="border border-neutral-800 bg-neutral-900/50 rounded-2xl">
+        <div className="border border-[#E9EFEF] bg-white rounded-[20px] shadow-sm">
           <EmptyState
             title="Belum ada pesanan aktif"
             subtitle="Tambahkan pesanan baru melalui menu Data Pemesan."
           />
         </div>
       )}
+
+      {/* Charts & Details Section (Moved under Kanban) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8 pt-6 border-t border-[#E9EFEF]">
+        {/* Left Column */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="rounded-[20px] border border-[#E9EFEF] bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold text-[#0B130F] mb-6 uppercase tracking-wider">Perbandingan Modal vs Pendapatan</h2>
+            {orders && stocks ? <FinancialBarChart orders={orders} stocks={stocks} /> : <div className="h-72 flex items-center justify-center"><Spinner className="w-6 h-6 text-[#B4F105]" /></div>}
+          </div>
+
+          <div className="rounded-[20px] border border-[#E9EFEF] bg-white p-6 shadow-sm">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-sm font-bold text-[#0B130F] uppercase tracking-wider">Ketersediaan Stok per Barang</h2>
+            </div>
+            {stocks.length === 0 ? (
+              <p className="text-sm text-[#879A91] py-4">Belum ada data stok.</p>
+            ) : (
+              <div className="space-y-5">
+                {stocks.map(stock => {
+                  const maxEstim = Math.max(100, stock.quantity + 20); 
+                  const percent = Math.min(100, Math.round((stock.quantity / maxEstim) * 100));
+                  return (
+                    <div key={stock.id}>
+                      <div className="mb-2 flex justify-between text-sm">
+                        <span className="font-medium text-[#6C7E75]">{stock.name}</span>
+                        <span className="font-bold text-[#0B130F]">{stock.quantity} pcs</span>
+                      </div>
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#F4F6F5]">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-500 ${stock.quantity <= 5 ? "bg-[#EF4444]" : "bg-[#B4F105]"}`} 
+                          style={{ width: `${percent}%` }} 
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="flex flex-col gap-6">
+          <div className="rounded-[20px] border border-[#E9EFEF] bg-white p-6 shadow-sm flex flex-col">
+            <h2 className="text-sm font-bold text-[#0B130F] mb-6 uppercase tracking-wider">Statistik Status Pembayaran</h2>
+            {orders ? <PaymentStatusPieChart orders={orders} /> : <div className="h-[250px] flex items-center justify-center"><Spinner className="w-6 h-6 text-[#B4F105]" /></div>}
+            
+            <div className="mt-8 space-y-4 border-t border-[#E9EFEF] pt-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-full bg-[#22C55E]"></span>
+                  <span className="text-sm font-medium text-[#6C7E75]">Lunas</span>
+                </div>
+                <span className="text-base font-bold text-[#0B130F]">{totalLunas}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-full bg-[#F97316]"></span>
+                  <span className="text-sm font-medium text-[#6C7E75]">Sudah DP</span>
+                </div>
+                <span className="text-base font-bold text-[#0B130F]">{totalSudahDP}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-full bg-[#EF4444]"></span>
+                  <span className="text-sm font-medium text-[#6C7E75]">Belum DP</span>
+                </div>
+                <span className="text-base font-bold text-[#0B130F]">{totalBelumDP}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[20px] bg-[#DCFCE7]/50 p-6 text-center border border-[#DCFCE7]">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#22C55E] mb-2">Perhatian</p>
+            <p className="text-sm text-[#072F1F] leading-relaxed">
+              Pastikan Anda mengupdate status pada papan pesanan secara berkala agar pelanggan mendapatkan informasi terkini.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <ConfirmDialog
         open={pendingComplete !== null}
@@ -477,8 +477,8 @@ export default function AdminHomePage() {
         loading={confirmLoading}
         message={
           pendingComplete && (
-            <span className="text-neutral-300">
-              Pesanan <strong className="text-neutral-100">{pendingComplete.buyerName}</strong> akan dipindahkan ke Riwayat Pemesanan.
+            <span className="text-[#6C7E75]">
+              Pesanan <strong className="text-[#0B130F]">{pendingComplete.buyerName}</strong> akan dipindahkan ke Riwayat Pemesanan.
             </span>
           )
         }
@@ -490,14 +490,14 @@ export default function AdminHomePage() {
 function StatTile({ label, value, accentColor, highlight = false }: { label: string; value: string; accentColor: string; highlight?: boolean }) {
   return (
     <div
-      className={`rounded-2xl border p-5 transition-all ${
+      className={`rounded-[20px] border p-5 transition-shadow ${
         highlight 
-          ? "border-amber-500/30 bg-amber-500/5 shadow-[0_0_15px_rgba(245,158,11,0.05)]" 
-          : "border-neutral-800 bg-neutral-900/50 backdrop-blur-sm hover:border-neutral-700"
+          ? "border-[#B4F105]/50 bg-[#B4F105]/10 shadow-sm hover:shadow-md" 
+          : "border-[#E9EFEF] bg-white shadow-sm hover:shadow-md"
       }`}
     >
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">{label}</p>
-      <p className={`mt-2.5 text-2xl font-display font-semibold tracking-wide ${accentColor}`}>
+      <p className="text-[10px] font-bold uppercase tracking-wider text-[#879A91]">{label}</p>
+      <p className={`mt-2.5 text-2xl font-display font-bold tracking-wide ${accentColor}`}>
         {value}
       </p>
     </div>

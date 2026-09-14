@@ -15,10 +15,10 @@ import {
 import { BoxIcon, PencilIcon, PlusIcon, TrashIcon } from "@/components/icons";
 
 // Common classes for dark theme buttons
-const btnPrimary = "inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-amber-400 disabled:opacity-60";
-const btnGhost = "inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-neutral-400 transition hover:bg-neutral-800 hover:text-neutral-100 disabled:opacity-60";
+const btnPrimary = "inline-flex items-center gap-2 rounded-lg bg-[#B4F105] px-4 py-2 text-sm font-semibold text-[#051C12] transition hover:bg-amber-400 disabled:opacity-60";
+const btnGhost = "inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-[#6C7E75] transition hover:bg-[#E9EFEF] hover:text-[#0B130F] disabled:opacity-60";
 const btnDanger = "inline-flex items-center gap-2 rounded-lg bg-red-500/10 text-red-500 px-4 py-2 text-sm font-medium transition hover:bg-red-500 hover:text-white disabled:opacity-60";
-const inputCls = "w-full rounded-lg border border-neutral-800 bg-neutral-900/50 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors";
+const inputCls = "w-full rounded-lg border border-[#E9EFEF] bg-white px-4 py-2.5 text-sm text-[#0B130F] placeholder:text-[#879A91] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105] transition-colors";
 
 export default function KelolaStokPage() {
   const [stocks, setStocks] = useState<Stock[] | null>(null);
@@ -164,30 +164,30 @@ export default function KelolaStokPage() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-display font-semibold tracking-wide text-neutral-100">Kelola Stok</h1>
-          <p className="mt-1 text-sm text-neutral-400">Atur jenis baju, jumlah stok, harga modal, dan harga jual.</p>
+          <h1 className="text-2xl font-display font-semibold tracking-wide text-[#0B130F]">Kelola Stok</h1>
+          <p className="mt-1 text-sm text-[#6C7E75]">Atur jenis baju, jumlah stok, harga modal, dan harga jual.</p>
         </div>
         <button onClick={openAdd} className={btnPrimary}>
           <PlusIcon className="h-4 w-4" /> Tambah Stok
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-xl shadow-xl">
+      <div className="overflow-hidden rounded-2xl border border-[#E9EFEF] bg-white backdrop-blur-xl shadow-xl">
         {stocks === null ? (
-          <div className="flex items-center justify-center py-24 text-neutral-500">
-            <Spinner className="h-7 w-7 text-amber-500" />
+          <div className="flex items-center justify-center py-24 text-[#879A91]">
+            <Spinner className="h-7 w-7 text-[#072F1F]" />
           </div>
         ) : stocks.length === 0 ? (
           <EmptyState
-            icon={<BoxIcon className="h-10 w-10 text-amber-500/50" />}
+            icon={<BoxIcon className="h-10 w-10 text-[#072F1F]/50" />}
             title="Belum ada jenis baju"
             subtitle="Klik 'Tambah Stok' untuk mulai mencatat stok."
           />
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-neutral-800 text-sm">
+            <table className="min-w-full divide-y divide-[#E9EFEF] text-sm">
               <thead>
-                <tr className="bg-neutral-900 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                <tr className="bg-[#F4F6F5] text-left text-xs font-semibold uppercase tracking-wider text-[#879A91]">
                   <th className="px-5 py-4">Nama Jenis Baju</th>
                   <th className="px-5 py-4">Jumlah Stok</th>
                   <th className="px-5 py-4">Harga Modal</th>
@@ -195,16 +195,16 @@ export default function KelolaStokPage() {
                   <th className="px-5 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-800/50">
+              <tbody className="divide-y divide-[#E9EFEF]">
                 {stocks.map((stock) => (
-                  <tr key={stock.id} className="transition-colors hover:bg-neutral-800/30">
-                    <td className="px-5 py-4 font-medium text-neutral-200">{stock.name}</td>
+                  <tr key={stock.id} className="transition-colors hover:bg-[#F4F6F5]">
+                    <td className="px-5 py-4 font-medium text-[#0B130F]">{stock.name}</td>
                     <td className="px-5 py-4">
                       <span
                         className={`inline-flex min-w-[2rem] justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${
                           stock.quantity <= 5
                             ? "bg-red-500/10 text-red-500 ring-red-500/20"
-                            : "bg-amber-500/10 text-amber-500 ring-amber-500/20"
+                            : "bg-[#B4F105]/10 text-[#072F1F] ring-[#B4F105]/20"
                         }`}
                       >
                         {stock.quantity}
@@ -218,7 +218,7 @@ export default function KelolaStokPage() {
                           onClick={() => openEdit(stock)}
                           aria-label={`Edit ${stock.name}`}
                           title="Edit"
-                          className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-amber-500/10 hover:text-amber-500"
+                          className="rounded-lg p-2 text-[#879A91] transition-colors hover:bg-[#B4F105]/10 hover:text-[#072F1F]"
                         >
                           <PencilIcon className="h-4 w-4" />
                         </button>
@@ -226,7 +226,7 @@ export default function KelolaStokPage() {
                           onClick={() => setDeleteTarget(stock)}
                           aria-label={`Hapus ${stock.name}`}
                           title="Hapus"
-                          className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-red-500/10 hover:text-red-500"
+                          className="rounded-lg p-2 text-[#879A91] transition-colors hover:bg-red-500/10 hover:text-red-500"
                         >
                           <TrashIcon className="h-4 w-4" />
                         </button>
@@ -248,7 +248,7 @@ export default function KelolaStokPage() {
       >
         <form onSubmit={submitForm} className="space-y-4">
           <div>
-            <label htmlFor="nama-baju" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-neutral-400">
+            <label htmlFor="nama-baju" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-[#6C7E75]">
               Nama Jenis Baju
             </label>
             <input
@@ -262,7 +262,7 @@ export default function KelolaStokPage() {
             />
           </div>
           <div>
-            <label htmlFor="jumlah-stok" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-neutral-400">
+            <label htmlFor="jumlah-stok" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-[#6C7E75]">
               Jumlah Stok
             </label>
             <input
@@ -278,7 +278,7 @@ export default function KelolaStokPage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="harga-modal" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-neutral-400">
+              <label htmlFor="harga-modal" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-[#6C7E75]">
                 Harga Modal (Rp)
               </label>
               <input
@@ -293,7 +293,7 @@ export default function KelolaStokPage() {
               />
             </div>
             <div>
-              <label htmlFor="harga-jual" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-neutral-400">
+              <label htmlFor="harga-jual" className="mb-1.5 block text-xs font-medium tracking-wide uppercase text-[#6C7E75]">
                 Harga Jual (Rp) <span className="text-red-500">*</span>
               </label>
               <input
@@ -309,7 +309,7 @@ export default function KelolaStokPage() {
               />
             </div>
           </div>
-          <p className="mt-1 text-xs text-neutral-500">Harga jual harus lebih dari 0. Nama produk tidak boleh sama.</p>
+          <p className="mt-1 text-xs text-[#879A91]">Harga jual harus lebih dari 0. Nama produk tidak boleh sama.</p>
 
           {formError && (
             <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400 text-center">
@@ -338,8 +338,8 @@ export default function KelolaStokPage() {
         tone="danger"
         message={
           deleteTarget && (
-            <span className="text-neutral-300">
-              <strong className="text-neutral-100">{deleteTarget.name}</strong> beserta{" "}
+            <span className="text-[#6C7E75]">
+              <strong className="text-[#0B130F]">{deleteTarget.name}</strong> beserta{" "}
               {deleteTarget.quantity} unit stok akan dihapus permanen.
             </span>
           )
@@ -354,12 +354,12 @@ export default function KelolaStokPage() {
       >
         {blockedInfo && (
           <div className="space-y-4">
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-500">
+            <div className="rounded-lg border border-[#B4F105]/30 bg-[#B4F105]/10 px-4 py-3 text-sm text-[#072F1F]">
               {blockedInfo.error}
             </div>
-            <p className="text-sm text-neutral-400">
-              Stok <strong className="text-neutral-100">{blockedInfo.stock.name}</strong> masih dipakai oleh{" "}
-              <strong className="text-neutral-100">{blockedInfo.orderCount}</strong> pesanan. Jika stok ini dihapus,
+            <p className="text-sm text-[#6C7E75]">
+              Stok <strong className="text-[#0B130F]">{blockedInfo.stock.name}</strong> masih dipakai oleh{" "}
+              <strong className="text-[#0B130F]">{blockedInfo.orderCount}</strong> pesanan. Jika stok ini dihapus,
               semua pesanan terkait juga ikut terhapus.
             </p>
             <div className="flex justify-end gap-3 pt-4">
@@ -378,10 +378,10 @@ export default function KelolaStokPage() {
       <Modal open={showForceModal} onClose={() => setShowForceModal(false)} title="Verifikasi hapus stok">
         {blockedInfo && (
           <div className="space-y-4">
-            <p className="text-sm text-neutral-400">
-              Untuk menghapus <strong className="text-neutral-100">{blockedInfo.stock.name}</strong> beserta{" "}
+            <p className="text-sm text-[#6C7E75]">
+              Untuk menghapus <strong className="text-[#0B130F]">{blockedInfo.stock.name}</strong> beserta{" "}
               {blockedInfo.orderCount} pesanan terkait, ketik{" "}
-              <span className="rounded bg-neutral-800 px-2 py-0.5 font-mono text-sm font-bold text-neutral-100">Hapus Stok</span>{" "}
+              <span className="rounded bg-[#E9EFEF] px-2 py-0.5 font-mono text-sm font-bold text-[#0B130F]">Hapus Stok</span>{" "}
               di bawah ini:
             </p>
             <input

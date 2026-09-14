@@ -52,10 +52,10 @@ export function FinancialBarChart({ orders, stocks }: { orders: Order[], stocks:
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-neutral-900 border border-neutral-800 p-3 rounded-lg shadow-xl">
-          <p className="text-neutral-300 text-xs mb-2">{label}</p>
-          <p className="text-amber-500 text-sm font-semibold">Pendapatan: {formatIDR(payload[0].value)}</p>
-          <p className="text-rose-500 text-sm font-semibold">Modal: {formatIDR(payload[1].value)}</p>
+        <div className="bg-white border border-[#E9EFEF] p-3 rounded-lg shadow-lg">
+          <p className="text-[#6C7E75] text-xs mb-2">{label}</p>
+          <p className="text-blue-600 text-sm font-bold">Pendapatan: {formatIDR(payload[0].value)}</p>
+          <p className="text-red-500 text-sm font-bold">Modal: {formatIDR(payload[1].value)}</p>
         </div>
       );
     }
@@ -66,19 +66,19 @@ export function FinancialBarChart({ orders, stocks }: { orders: Order[], stocks:
     <div className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
-          <XAxis dataKey="name" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E9EFEF" vertical={false} />
+          <XAxis dataKey="name" stroke="#6C7E75" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis 
-            stroke="#737373" 
+            stroke="#6C7E75" 
             fontSize={12} 
             tickLine={false} 
             axisLine={false}
             tickFormatter={(value) => `Rp${value / 1000}k`}
           />
-          <RechartsTooltip content={<CustomTooltip />} cursor={{fill: '#262626'}} />
-          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: '#a3a3a3' }} />
-          <Bar dataKey="revenue" name="Pendapatan" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="modal" name="Modal" fill="#e11d48" radius={[4, 4, 0, 0]} />
+          <RechartsTooltip content={<CustomTooltip />} cursor={{fill: '#F4F6F5'}} />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: '#6C7E75' }} />
+          <Bar dataKey="revenue" name="Pendapatan" fill="#2563EB" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="modal" name="Modal" fill="#EF4444" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -94,14 +94,14 @@ export function PaymentStatusPieChart({ orders }: { orders: Order[] }) {
       else belum++;
     }
     return [
-      { name: "Lunas", value: lunas, color: "#10b981" }, // Emerald
-      { name: "Sudah DP", value: dp, color: "#f59e0b" }, // Amber
-      { name: "Belum DP", value: belum, color: "#ef4444" }, // Red
+      { name: "Lunas", value: lunas, color: "#22C55E" }, // Emerald
+      { name: "Sudah DP", value: dp, color: "#F97316" }, // Orange
+      { name: "Belum DP", value: belum, color: "#EF4444" }, // Red
     ].filter(d => d.value > 0);
   }, [orders]);
 
   if (data.length === 0) {
-    return <div className="h-72 flex items-center justify-center text-neutral-500 text-sm">Belum ada data pembayaran</div>;
+    return <div className="h-72 flex items-center justify-center text-[#879A91] text-sm">Belum ada data pembayaran</div>;
   }
 
   return (
@@ -123,10 +123,10 @@ export function PaymentStatusPieChart({ orders }: { orders: Order[] }) {
             ))}
           </Pie>
           <RechartsTooltip 
-            contentStyle={{ backgroundColor: '#171717', borderColor: '#262626', borderRadius: '8px' }}
-            itemStyle={{ color: '#e5e5e5' }}
+            contentStyle={{ backgroundColor: '#ffffff', borderColor: '#E9EFEF', borderRadius: '8px', color: '#0B130F', fontWeight: 'bold' }}
+            itemStyle={{ color: '#0B130F' }}
           />
-          <Legend wrapperStyle={{ fontSize: '12px', color: '#a3a3a3' }} />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#6C7E75' }} />
         </PieChart>
       </ResponsiveContainer>
     </div>
