@@ -438,9 +438,11 @@ export default function AdminHomePage() {
                   const percent = Math.min(100, Math.round((stock.quantity / maxEstim) * 100));
                   return (
                     <div key={stock.id}>
-                      <div className="mb-2 flex justify-between text-sm">
+                      <div className="mb-2 flex justify-between text-sm items-end">
                         <span className="font-medium text-[#6C7E75]">{stock.name}</span>
-                        <span className="font-bold text-[#0B130F]">{stock.quantity} pcs</span>
+                        <span className={`font-bold ${stock.quantity <= 5 ? "text-red-600 animate-pulse text-base" : "text-[#0B130F]"}`}>
+                          {stock.quantity} pcs
+                        </span>
                       </div>
                       <div className="h-2 w-full overflow-hidden rounded-full bg-[#F4F6F5]">
                         <div 
