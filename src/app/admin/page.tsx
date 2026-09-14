@@ -248,7 +248,7 @@ export default function AdminHomePage() {
       {/* Financial Summary */}
       <div>
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-[#6C7E75]">Ringkasan Keuangan</h2>
-        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatTile label="Total Modal Produksi" value={formatIDR(totalModal)} accentColor="text-[#EF4444]" />
           <StatTile label="Proyeksi Pendapatan" value={formatIDR(totalRevenue)} accentColor="text-blue-600" />
           <StatTile label="Proyeksi Keuntungan" value={formatIDR(totalProfit)} accentColor="text-[#22C55E]" />
@@ -538,7 +538,7 @@ function StatTile({ label, value, accentColor, highlight = false }: { label: str
       }`}
     >
       <p className="text-[10px] font-bold uppercase tracking-wider text-[#879A91]">{label}</p>
-      <p className={`mt-2.5 text-2xl font-display font-bold tracking-wide ${accentColor}`}>
+      <p className={`mt-2.5 text-xl sm:text-2xl font-display font-bold tracking-wide ${accentColor} break-words`}>
         {value}
       </p>
     </div>
