@@ -16,7 +16,7 @@ export async function PUT(req: Request, { params }: Params) {
   }
 
   const body = await readJson(req);
-  const data: { name?: string; quantity?: number; unitPrice?: number } = {};
+  const data: { name?: string; quantity?: number; unitPrice?: number; costPrice?: number } = {};
 
   if ("name" in body) {
     const name = trimmed(body.name, 80);
@@ -41,9 +41,16 @@ export async function PUT(req: Request, { params }: Params) {
   if ("unitPrice" in body) {
     const unitPrice = toNumber(body.unitPrice);
     if (unitPrice === undefined || unitPrice <= 0) {
-      return NextResponse.json({ error: "Harga satuan harus lebih dari 0." }, { status: 400 });
+      return NextResponse.json({ error: "Harga jual harus lebih dari 0." }, { status: 400 });
     }
     data.unitPrice = unitPrice;
+  }
+
+  if ("costPrice" in body) {
+    const costPrice = toNumber(body.costPrice);
+    if (costPrice !== undefined) {
+      data.costPrice = costPrice;
+    }
   }
 
   const stock = await prisma.stock.update({ where: { id }, data });

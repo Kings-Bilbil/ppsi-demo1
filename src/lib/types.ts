@@ -1,13 +1,14 @@
-export interface Stock {
+export type Stock = {
   id: string;
   name: string;
   quantity: number;
   unitPrice: number;
+  costPrice: number;
   createdAt: string;
   updatedAt: string;
-}
+};
 
-export interface Order {
+export type Order = {
   id: string;
   buyerName: string;
   stockId: string | null;
@@ -16,8 +17,10 @@ export interface Order {
   totalPrice: number;
   description: string | null;
   status: string;
+  paymentStatus: string;
+  amountPaid: number;
   purchaseCode: string;
   createdAt: string;
   updatedAt: string;
   completedAt: string | null;
-}
+};

@@ -97,6 +97,17 @@ export async function PUT(req: Request, { params }: Params) {
     data.description = optionalText(body.description);
   }
 
+  if ("paymentStatus" in body) {
+    data.paymentStatus = typeof body.paymentStatus === 'string' ? body.paymentStatus : "Belum DP";
+  }
+
+  if ("amountPaid" in body) {
+    const amt = Number(body.amountPaid);
+    if (!isNaN(amt)) {
+      data.amountPaid = amt;
+    }
+  }
+
   let nextStatus: string | undefined;
   if ("status" in body) {
     if (!isStatus(body.status)) {

@@ -16,10 +16,10 @@ import {
 import { NeedleLogo } from "@/components/GarmentArt";
 
 const NAV = [
-  { href: "/admin", label: "Home", icon: HomeIcon },
+  { href: "/admin", label: "Dashboard", icon: HomeIcon },
   { href: "/admin/stok", label: "Kelola Stok", icon: BoxIcon },
   { href: "/admin/pemesan", label: "Data Pemesan", icon: UsersIcon },
-  { href: "/admin/riwayat", label: "Riwayat Pemesanan", icon: ClockIcon },
+  { href: "/admin/riwayat", label: "Riwayat", icon: ClockIcon },
 ];
 
 export default function AdminShell({ username, children }: { username: string; children: ReactNode }) {
@@ -42,14 +42,14 @@ export default function AdminShell({ username, children }: { username: string; c
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#b98a2f] to-[#96701f] text-white">
-          <NeedleLogo className="h-4 w-4" />
+    <div className="flex h-full flex-col text-neutral-100">
+      <div className="flex h-16 items-center gap-2.5 border-b border-neutral-800 px-5">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 text-neutral-950">
+          <NeedleLogo className="h-5 w-5" />
         </span>
         <div>
-          <p className="font-display text-sm font-semibold leading-tight text-slate-900">Arunika Tailor</p>
-          <p className="text-[11px] text-slate-400">Panel Admin</p>
+          <p className="font-display text-sm font-semibold tracking-wide text-amber-500">ARUNIKA</p>
+          <p className="text-[10px] uppercase tracking-wider text-neutral-500">Tailor Dashboard</p>
         </div>
       </div>
 
@@ -63,33 +63,33 @@ export default function AdminShell({ username, children }: { username: string; c
               href={item.href}
               prefetch
               onClick={() => setDrawerOpen(false)}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 active
-                  ? "bg-[#e8f0fe] text-[#1a73e8]"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  ? "bg-amber-500/10 text-amber-500"
+                  : "text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
               }`}
             >
-              <Icon className={`h-5 w-5 ${active ? "text-[#1a73e8]" : "text-slate-400"}`} />
+              <Icon className={`h-5 w-5 ${active ? "text-amber-500" : "text-neutral-500"}`} />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-slate-200 p-4">
-        <div className="mb-3 flex items-center gap-3 px-1">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1a73e8] text-sm font-semibold text-white">
+      <div className="border-t border-neutral-800 p-4">
+        <div className="mb-4 flex items-center gap-3 px-1">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-800 text-sm font-semibold text-amber-500 ring-1 ring-neutral-700">
             {username.charAt(0).toUpperCase()}
           </span>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium capitalize text-slate-800">{username}</p>
-            <p className="text-xs text-slate-400">Administrator</p>
+            <p className="truncate text-sm font-medium capitalize text-neutral-200">{username}</p>
+            <p className="text-xs text-neutral-500">Administrator</p>
           </div>
         </div>
         <button
           onClick={logout}
           disabled={loggingOut}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-red-50 hover:text-red-600 disabled:opacity-60"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-400 transition-colors hover:bg-red-950/30 hover:text-red-500 disabled:opacity-60"
         >
           <LogoutIcon className="h-5 w-5" />
           Keluar
@@ -99,23 +99,23 @@ export default function AdminShell({ username, children }: { username: string; c
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-neutral-950 font-sans text-neutral-100 selection:bg-amber-500/30">
       {/* Sidebar desktop */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 border-r border-slate-200 bg-white lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-neutral-800 bg-neutral-900/50 backdrop-blur-xl lg:block">
         {sidebarContent}
       </aside>
 
       {/* Topbar mobile */}
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 lg:hidden">
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-neutral-800 bg-neutral-900/80 px-4 backdrop-blur-md lg:hidden">
         <button
           onClick={() => setDrawerOpen(true)}
           aria-label="Buka menu"
-          className="rounded-lg p-2 text-slate-600 hover:bg-slate-100"
+          className="rounded-lg p-2 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
         >
           <MenuIcon className="h-6 w-6" />
         </button>
-        <span className="font-display text-base font-semibold text-slate-900">Arunika Tailor</span>
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a73e8] text-xs font-semibold text-white">
+        <span className="font-display text-sm font-semibold tracking-wide text-amber-500">ARUNIKA</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800 text-xs font-semibold text-amber-500 ring-1 ring-neutral-700">
           {username.charAt(0).toUpperCase()}
         </span>
       </header>
@@ -123,12 +123,12 @@ export default function AdminShell({ username, children }: { username: string; c
       {/* Drawer mobile */}
       {drawerOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-slate-900/50" onClick={() => setDrawerOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col bg-white shadow-2xl">
+          <div className="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm" onClick={() => setDrawerOpen(false)} />
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col bg-neutral-900 shadow-2xl ring-1 ring-white/10">
             <button
               onClick={() => setDrawerOpen(false)}
               aria-label="Tutup menu"
-              className="absolute right-3 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"
+              className="absolute right-3 top-4 rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-800"
             >
               <XIcon className="h-5 w-5" />
             </button>
@@ -137,8 +137,8 @@ export default function AdminShell({ username, children }: { username: string; c
         </div>
       )}
 
-      <main className="lg:pl-60">
-        <div className="mx-auto max-w-7xl p-4 md:p-8">{children}</div>
+      <main className="lg:pl-64">
+        <div className="mx-auto max-w-7xl p-4 md:p-8 lg:p-10">{children}</div>
       </main>
     </div>
   );

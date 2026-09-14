@@ -54,6 +54,8 @@ export async function POST(req: Request) {
         stockName: stock.name,
         quantity,
         totalPrice,
+        paymentStatus: typeof body.paymentStatus === 'string' ? body.paymentStatus : "Belum DP",
+        amountPaid: typeof body.amountPaid === 'number' ? body.amountPaid : 0,
         description: optionalText(body.description),
         purchaseCode,
       },

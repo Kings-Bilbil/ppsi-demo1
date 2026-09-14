@@ -1,0 +1,133 @@
+"use client";
+
+import { useMemo } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
+import type { Order, Stock } from "@/lib/types";
+import { formatIDR } from "@/lib/format";
+
+export function FinancialBarChart({ orders, stocks }: { orders: Order[], stocks: Stock[] }) {
+  const data = useMemo(() => {
+    // Group orders by month/week or just simple total for now based on status/time
+    // Since this is a demo, let's just group by month of creation
+    const monthlyMap = new Map<string, { name: string; revenue: number; modal: number }>();
+    
+    // Initialize last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date();
+      d.setMonth(d.getMonth() - i);
+      const name = d.toLocaleString('id-ID', { month: 'short' });
+      monthlyMap.set(d.getMonth().toString(), { name, revenue: 0, modal: 0 });
+    }
+
+    for (const order of orders) {
+      const d = new Date(order.createdAt);
+      const mKey = d.getMonth().toString();
+      if (monthlyMap.has(mKey)) {
+        const item = monthlyMap.get(mKey)!;
+        item.revenue += order.totalPrice;
+        
+        // Modal is calculated based on current costPrice of the stock
+        const stock = stocks.find(s => s.name === order.stockName);
+        if (stock) {
+          item.modal += stock.costPrice * order.quantity;
+        }
+      }
+    }
+    return Array.from(monthlyMap.values());
+  }, [orders, stocks]);
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-neutral-900 border border-neutral-800 p-3 rounded-lg shadow-xl">
+          <p className="text-neutral-300 text-xs mb-2">{label}</p>
+          <p className="text-amber-500 text-sm font-semibold">Pendapatan: {formatIDR(payload[0].value)}</p>
+          <p className="text-rose-500 text-sm font-semibold">Modal: {formatIDR(payload[1].value)}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div className="h-72 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+          <XAxis dataKey="name" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
+          <YAxis 
+            stroke="#737373" 
+            fontSize={12} 
+            tickLine={false} 
+            axisLine={false}
+            tickFormatter={(value) => `Rp${value / 1000}k`}
+          />
+          <RechartsTooltip content={<CustomTooltip />} cursor={{fill: '#262626'}} />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px', color: '#a3a3a3' }} />
+          <Bar dataKey="revenue" name="Pendapatan" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="modal" name="Modal" fill="#e11d48" radius={[4, 4, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+export function PaymentStatusPieChart({ orders }: { orders: Order[] }) {
+  const data = useMemo(() => {
+    let lunas = 0, dp = 0, belum = 0;
+    for (const o of orders) {
+      if (o.paymentStatus === "Lunas") lunas++;
+      else if (o.paymentStatus === "Sudah DP") dp++;
+      else belum++;
+    }
+    return [
+      { name: "Lunas", value: lunas, color: "#10b981" }, // Emerald
+      { name: "Sudah DP", value: dp, color: "#f59e0b" }, // Amber
+      { name: "Belum DP", value: belum, color: "#ef4444" }, // Red
+    ].filter(d => d.value > 0);
+  }, [orders]);
+
+  if (data.length === 0) {
+    return <div className="h-72 flex items-center justify-center text-neutral-500 text-sm">Belum ada data pembayaran</div>;
+  }
+
+  return (
+    <div className="h-72 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={60}
+            outerRadius={90}
+            paddingAngle={5}
+            dataKey="value"
+            stroke="none"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+          </Pie>
+          <RechartsTooltip 
+            contentStyle={{ backgroundColor: '#171717', borderColor: '#262626', borderRadius: '8px' }}
+            itemStyle={{ color: '#e5e5e5' }}
+          />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#a3a3a3' }} />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}

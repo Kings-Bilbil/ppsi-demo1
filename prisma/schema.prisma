@@ -12,7 +12,8 @@ model Stock {
   id        String   @id @default(uuid())
   name      String   @unique
   quantity  Int      @default(0)
-  unitPrice Float    @default(0)
+  unitPrice Float    @default(0) // Harga Jual
+  costPrice Float    @default(0) // Harga Modal
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orders    Order[]
@@ -28,6 +29,8 @@ model Order {
   totalPrice   Float
   description  String?
   status       String    @default("Perencanaan")
+  paymentStatus String   @default("Belum DP")
+  amountPaid   Float     @default(0)
   purchaseCode String    @unique
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

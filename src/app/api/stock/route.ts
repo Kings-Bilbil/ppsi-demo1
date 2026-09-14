@@ -16,6 +16,7 @@ export async function POST(req: Request) {
   const name = trimmed(body.name, 80);
   const quantity = toInt(body.quantity);
   const unitPrice = toNumber(body.unitPrice);
+  const costPrice = toNumber(body.costPrice) ?? 0;
 
   if (!name) {
     return NextResponse.json({ error: "Nama jenis baju wajib diisi." }, { status: 400 });
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Jumlah stok harus berupa angka minimal 0." }, { status: 400 });
   }
   if (unitPrice === undefined || unitPrice <= 0) {
-    return NextResponse.json({ error: "Harga satuan harus lebih dari 0." }, { status: 400 });
+    return NextResponse.json({ error: "Harga jual harus lebih dari 0." }, { status: 400 });
   }
 
   const all = await prisma.stock.findMany({ select: { name: true } });
@@ -32,6 +33,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Jenis baju "${name}" sudah ada.` }, { status: 409 });
   }
 
-  const stock = await prisma.stock.create({ data: { name, quantity, unitPrice } });
+  const stock = await prisma.stock.create({ data: { name, quantity, unitPrice, costPrice } });
   return NextResponse.json(stock, { status: 201 });
 }

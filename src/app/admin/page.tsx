@@ -14,6 +14,16 @@ import type { Order, Stock } from "@/lib/types";
 import { usePolling } from "@/components/hooks";
 import { ConfirmDialog, EmptyState, Spinner, useToast } from "@/components/ui";
 import { BoxIcon, CheckIcon } from "@/components/icons";
+import { FinancialBarChart, PaymentStatusPieChart } from "@/components/admin/AdminCharts";
+
+// Mock helper to get the status badge style
+const getPaymentBadge = (status: string) => {
+  switch (status) {
+    case "Lunas": return "bg-emerald-500/10 text-emerald-500 ring-emerald-500/20";
+    case "Sudah DP": return "bg-amber-500/10 text-amber-500 ring-amber-500/20";
+    default: return "bg-red-500/10 text-red-500 ring-red-500/20";
+  }
+};
 
 export default function AdminHomePage() {
   const [orders, setOrders] = useState<Order[] | null>(null);
@@ -21,6 +31,8 @@ export default function AdminHomePage() {
   const [completedCount, setCompletedCount] = useState(0);
   const [pendingComplete, setPendingComplete] = useState<Order | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [mutatingOrderId, setMutatingOrderId] = useState<string | null>(null);
+  
   const { show, node: toastNode } = useToast();
 
   const load = useCallback(async (isPoll = false) => {
@@ -66,24 +78,56 @@ export default function AdminHomePage() {
     return map;
   }, [orders]);
 
+  // Financial Calculations
+  const { totalModal, totalRevenue, totalProfit, currentBalance } = useMemo(() => {
+    if (!orders || !stocks) return { totalModal: 0, totalRevenue: 0, totalProfit: 0, currentBalance: 0 };
+    
+    let rev = 0;
+    let modal = 0;
+    let balance = 0;
+
+    for (const order of orders) {
+      rev += order.totalPrice;
+      balance += order.amountPaid || 0;
+      
+      const stock = stocks.find(s => s.name === order.stockName);
+      if (stock) {
+        modal += (stock.costPrice || 0) * order.quantity;
+      }
+    }
+
+    return {
+      totalModal: modal,
+      totalRevenue: rev,
+      totalProfit: rev - modal,
+      currentBalance: balance
+    };
+  }, [orders, stocks]);
+
   const updateStatus = useCallback(
     async (order: Order, status: Status) => {
       const prevStatus = order.status;
+      setMutatingOrderId(order.id);
+      
+      // Optimistic update
       setOrders((prev) =>
         prev ? prev.map((o) => (o.id === order.id ? { ...o, status } : o)) : prev
       );
+      
       try {
         await api(`/api/orders/${order.id}`, {
           method: "PUT",
           body: JSON.stringify({ status }),
         });
-        show(`Status ${order.buyerName} -> ${status}`);
+        show(`Pesanan ${order.buyerName} -> ${status}`);
       } catch (e) {
         // revert on failure
         setOrders((prev) =>
           prev ? prev.map((o) => (o.id === order.id ? { ...o, status: prevStatus } : o)) : prev
         );
         show(e instanceof Error ? e.message : "Gagal memperbarui status.", "error");
+      } finally {
+        setMutatingOrderId(null);
       }
     },
     [show]
@@ -134,73 +178,47 @@ export default function AdminHomePage() {
     void updateStatus(order, value as Status);
   };
 
-  const totalUnits = stocks.reduce((sum, s) => sum + s.quantity, 0);
-  const isTotalLow = totalUnits <= 5 && stocks.length > 0;
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {toastNode}
 
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Ringkasan</h1>
-        <p className="mt-1 text-sm text-slate-500">Pantau stok dan alur pesanan secara real-time.</p>
+        <h1 className="text-2xl font-display font-semibold tracking-wide text-neutral-100">Ringkasan Keuangan & Operasional</h1>
+        <p className="mt-1 text-sm text-neutral-400">Pantau performa bisnis dan alur pesanan secara real-time.</p>
       </div>
 
-      {/* Stat tiles */}
+      {/* Financial Stat tiles */}
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-        <StatTile label="Jenis Baju" value={String(stocks.length)} />
-        <StatTile label="Total Unit Stok" value={String(totalUnits)} low={isTotalLow} />
-        <StatTile label="Pesanan Aktif" value={String(orders?.length ?? 0)} />
-        <StatTile label="Pesanan Selesai" value={String(completedCount)} accent />
+        <StatTile label="Total Modal Produksi" value={formatIDR(totalModal)} accentColor="text-rose-500" />
+        <StatTile label="Proyeksi Pendapatan" value={formatIDR(totalRevenue)} accentColor="text-blue-500" />
+        <StatTile label="Proyeksi Keuntungan" value={formatIDR(totalProfit)} accentColor="text-emerald-500" />
+        <StatTile label="Saldo Kas (Masuk)" value={formatIDR(currentBalance)} accentColor="text-amber-500" highlight />
       </div>
 
-      {/* Stock chips */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-800">
-          <BoxIcon className="h-4 w-4 text-[#1a73e8]" /> Stok per Jenis Baju
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl">
+          <h2 className="text-sm font-semibold text-neutral-200 mb-6 uppercase tracking-wider">Perbandingan Modal vs Pendapatan</h2>
+          {orders && stocks ? <FinancialBarChart orders={orders} stocks={stocks} /> : <div className="h-72 flex items-center justify-center"><Spinner className="w-6 h-6 text-amber-500" /></div>}
         </div>
-        {stocks.length === 0 ? (
-          <p className="text-sm text-slate-400">Belum ada data stok. Tambahkan di menu Kelola Stok.</p>
-        ) : (
-          <div className="flex flex-wrap gap-2">
-            {stocks.map((s) => {
-              const isLow = s.quantity <= 5;
-              return (
-                <span
-                  key={s.id}
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${
-                    isLow
-                      ? "border-red-300 bg-red-50 text-red-700 animate-stock-blink"
-                      : "border-slate-200 bg-slate-50 text-slate-700"
-                  }`}
-                >
-                  {s.name}
-                  <span
-                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                      isLow ? "bg-red-200 text-red-800" : "bg-white ring-1 ring-inset ring-slate-200"
-                    }`}
-                  >
-                    {s.quantity}
-                  </span>
-                </span>
-              );
-            })}
-          </div>
-        )}
-      </section>
+        <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-xl">
+          <h2 className="text-sm font-semibold text-neutral-200 mb-6 uppercase tracking-wider">Status Pembayaran</h2>
+          {orders ? <PaymentStatusPieChart orders={orders} /> : <div className="h-72 flex items-center justify-center"><Spinner className="w-6 h-6 text-amber-500" /></div>}
+        </div>
+      </div>
 
       {/* Kanban */}
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-slate-900">Papan Pesanan</h2>
-          <p className="hidden text-xs text-slate-400 sm:block">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-lg font-display font-semibold tracking-wide text-neutral-100">Papan Pesanan (Kanban)</h2>
+          <p className="hidden text-xs tracking-wider text-neutral-500 uppercase sm:block">
             Tarik kartu antar kolom untuk mengubah status
           </p>
         </div>
 
         {orders === null ? (
-          <div className="flex items-center justify-center rounded-2xl border border-slate-200 bg-white py-24 text-slate-400 shadow-sm">
-            <Spinner className="h-7 w-7" />
+          <div className="flex items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/50 py-32 text-neutral-400 shadow-sm">
+            <Spinner className="h-8 w-8 text-amber-500" />
           </div>
         ) : (
           <DragDropContext
@@ -209,80 +227,95 @@ export default function AdminHomePage() {
             }}
             onDragEnd={onDragEnd}
           >
-            <div className="grid grid-cols-1 gap-4 overflow-x-auto pb-4 md:grid-cols-4 md:[&>*]:min-w-[240px] lg:[&>*]:min-w-[260px]">
+            <div className="grid grid-cols-1 gap-5 overflow-x-auto pb-4 md:grid-cols-4 md:[&>*]:min-w-[260px] lg:[&>*]:min-w-[280px]">
               {STATUSES.map((status) => (
                 <Droppable droppableId={status} key={status}>
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className={`flex min-h-56 flex-col rounded-2xl p-3 transition-colors ${
-                        snapshot.isDraggingOver ? "bg-[#e8f0fe]" : "bg-[#f1f3f4]"
+                      className={`flex min-h-[300px] flex-col rounded-2xl p-4 transition-colors ${
+                        snapshot.isDraggingOver ? "bg-amber-500/5 border border-amber-500/20" : "bg-neutral-900/40 border border-neutral-800"
                       }`}
                     >
-                      <div className="mb-3 flex items-center justify-between px-1">
-                        <div className="flex items-center gap-2">
-                          <span className={`h-2.5 w-2.5 rounded-full ${STATUS_STYLES[status].bar}`} />
-                          <h3 className="text-sm font-semibold text-slate-700">{status}</h3>
+                      <div className="mb-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <span className={`h-2.5 w-2.5 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.2)] ${STATUS_STYLES[status].bar.replace('bg-', 'bg-')}`} />
+                          <h3 className="text-sm font-semibold tracking-wide text-neutral-200">{status}</h3>
                         </div>
-                        <span className="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate-500 ring-1 ring-inset ring-slate-200">
+                        <span className="rounded-full bg-neutral-800 px-2.5 py-0.5 text-xs font-semibold text-neutral-400 ring-1 ring-inset ring-neutral-700">
                           {columns.get(status)?.length ?? 0}
                         </span>
                       </div>
 
                       <div className="flex flex-1 flex-col gap-3">
-                        {columns.get(status)?.map((order, index) => (
-                          <Draggable draggableId={order.id} index={index} key={order.id}>
-                            {(dragProvided, dragSnapshot) => (
-                              <div
-                                ref={dragProvided.innerRef}
-                                {...dragProvided.draggableProps}
-                                {...dragProvided.dragHandleProps}
-                                className={`rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow ${
-                                  dragSnapshot.isDragging
-                                    ? "cursor-grabbing shadow-lg"
-                                    : "cursor-grab hover:shadow-md"
-                                }`}
-                              >
-                                <p className="truncate pr-2 text-sm font-semibold text-slate-900">
-                                  {order.buyerName}
-                                </p>
-                                <p className="mt-1 text-xs text-slate-500">
-                                  {order.stockName} • {order.quantity} pcs
-                                </p>
-                                <p className="mt-1.5 text-sm font-semibold text-[#1a73e8]">
-                                  {formatIDR(order.totalPrice)}
-                                </p>
-                                <p className="mt-2 inline-block rounded-md bg-slate-100 px-2 py-1 font-mono text-xs tracking-wider text-slate-600 select-all">
-                                  {order.purchaseCode}
-                                </p>
+                        {columns.get(status)?.map((order, index) => {
+                          const isMutating = mutatingOrderId === order.id;
+                          return (
+                            <Draggable draggableId={order.id} index={index} key={order.id}>
+                              {(dragProvided, dragSnapshot) => (
+                                <div
+                                  ref={dragProvided.innerRef}
+                                  {...dragProvided.draggableProps}
+                                  {...dragProvided.dragHandleProps}
+                                  className={`relative rounded-xl border border-neutral-800 bg-neutral-950 p-4 transition-all ${
+                                    dragSnapshot.isDragging
+                                      ? "cursor-grabbing shadow-[0_10px_30px_rgba(0,0,0,0.5)] ring-1 ring-amber-500/50"
+                                      : "cursor-grab hover:border-neutral-700 hover:shadow-lg"
+                                  } ${isMutating ? "opacity-50 grayscale pointer-events-none" : ""}`}
+                                >
+                                  {isMutating && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/50 rounded-xl z-10 backdrop-blur-[1px]">
+                                      <Spinner className="h-6 w-6 text-amber-500" />
+                                    </div>
+                                  )}
+                                  
+                                  <div className="flex justify-between items-start mb-2">
+                                    <p className="truncate pr-2 text-sm font-semibold text-neutral-100">
+                                      {order.buyerName}
+                                    </p>
+                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ring-1 ring-inset ${getPaymentBadge(order.paymentStatus)}`}>
+                                      {order.paymentStatus || "Belum DP"}
+                                    </span>
+                                  </div>
+                                  
+                                  <p className="text-xs text-neutral-400">
+                                    {order.stockName} • <span className="text-neutral-300">{order.quantity} pcs</span>
+                                  </p>
+                                  <p className="mt-2 text-sm font-semibold tracking-wide text-amber-500">
+                                    {formatIDR(order.totalPrice)}
+                                  </p>
+                                  
+                                  <p className="mt-3 inline-block rounded-md bg-neutral-900 px-2 py-1 font-mono text-[10px] tracking-widest text-neutral-500 select-all border border-neutral-800">
+                                    {order.purchaseCode}
+                                  </p>
 
-                                <div className="mt-3 md:hidden">
-                                  <select
-                                    value={order.status}
-                                    onChange={(e) => onMobileStatusChange(order, e.target.value)}
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs focus:border-blue-500 focus:outline-none"
-                                  >
-                                    {STATUSES.map((s) => (
-                                      <option key={s} value={s}>
-                                        {s}
-                                      </option>
-                                    ))}
-                                  </select>
+                                  <div className="mt-4 md:hidden">
+                                    <select
+                                      value={order.status}
+                                      onChange={(e) => onMobileStatusChange(order, e.target.value)}
+                                      className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-2 py-1.5 text-xs text-neutral-300 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                                    >
+                                      {STATUSES.map((s) => (
+                                        <option key={s} value={s}>
+                                          {s}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                              )}
+                            </Draggable>
+                          );
+                        })}
                         {provided.placeholder}
 
                         {(columns.get(status)?.length ?? 0) === 0 && !snapshot.isDraggingOver && (
-                          <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-slate-300/70 p-4">
-                            <p className="text-center text-xs text-slate-400">
+                          <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-neutral-800/60 p-4">
+                            <p className="text-center text-xs text-neutral-600">
                               {status === "Selesai" ? (
                                 <span className="inline-flex items-center gap-1.5">
-                                  <CheckIcon className="h-4 w-4" /> Letakkan kartu di sini untuk
-                                  menyelesaikan
+                                  <CheckIcon className="h-4 w-4" /> Letakkan di sini untuk menyelesaikan
                                 </span>
                               ) : (
                                 "Tidak ada pesanan"
@@ -301,27 +334,27 @@ export default function AdminHomePage() {
       </section>
 
       {orders !== null && orders.length === 0 && (
-        <EmptyState
-          title="Belum ada pesanan aktif"
-          subtitle="Tambahkan pesanan baru melalui menu Data Pemesan."
-        />
+        <div className="border border-neutral-800 bg-neutral-900/50 rounded-2xl">
+          <EmptyState
+            title="Belum ada pesanan aktif"
+            subtitle="Tambahkan pesanan baru melalui menu Data Pemesan."
+          />
+        </div>
       )}
 
       <ConfirmDialog
         open={pendingComplete !== null}
         onCancel={() => setPendingComplete(null)}
         onConfirm={() => pendingComplete && handleSelesai(pendingComplete)}
-        title="Apakah pesanan telah selesai?"
+        title="Selesaikan Pesanan?"
         tone="success"
         confirmText="Ya, Selesaikan"
         cancelText="Tidak"
         loading={confirmLoading}
         message={
           pendingComplete && (
-            <span>
-              Pesanan atas nama{" "}
-              <strong className="text-slate-900">{pendingComplete.buyerName}</strong> akan dipindahkan ke
-              Riwayat Pemesanan dan kode pembelian menjadi tidak berlaku.
+            <span className="text-neutral-300">
+              Pesanan atas nama <strong className="text-neutral-100">{pendingComplete.buyerName}</strong> akan dipindahkan ke Riwayat Pemesanan.
             </span>
           )
         }
@@ -330,18 +363,19 @@ export default function AdminHomePage() {
   );
 }
 
-function StatTile({ label, value, accent = false, low = false }: { label: string; value: string; accent?: boolean; low?: boolean }) {
+function StatTile({ label, value, accentColor, highlight = false }: { label: string; value: string; accentColor: string; highlight?: boolean }) {
   return (
     <div
-      className={`rounded-2xl border p-5 shadow-sm ${
-        low ? "border-red-300 bg-red-50 animate-stock-blink" : accent ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white"
+      className={`rounded-2xl border p-5 transition-all ${
+        highlight 
+          ? "border-amber-500/30 bg-amber-500/5 shadow-[0_0_15px_rgba(245,158,11,0.05)]" 
+          : "border-neutral-800 bg-neutral-900/50 backdrop-blur-sm hover:border-neutral-700"
       }`}
     >
-      <p className={`text-xs font-medium uppercase tracking-wide ${low ? "text-red-600" : "text-slate-500"}`}>{label}</p>
-      <p className={`mt-2 text-3xl font-semibold ${low ? "text-red-600" : accent ? "text-emerald-700" : "text-slate-900"}`}>
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">{label}</p>
+      <p className={`mt-2.5 text-2xl font-display font-semibold tracking-wide ${accentColor}`}>
         {value}
       </p>
-      {low && <p className="mt-1 text-[11px] font-semibold text-red-600">Stok hampir habis!</p>}
     </div>
   );
 }
