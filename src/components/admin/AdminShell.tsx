@@ -12,6 +12,8 @@ import {
   MenuIcon,
   UsersIcon,
   XIcon,
+  ChevronBarLeftIcon,
+  ChevronBarRightIcon,
 } from "@/components/icons";
 import { NeedleLogo } from "@/components/GarmentArt";
 
@@ -145,10 +147,10 @@ export default function AdminShell({ username, children }: { username: string; c
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)} 
-            className="rounded-lg p-2 text-[#6C7E75] hover:bg-[#F4F6F5] transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F6F5] text-[#6C7E75] hover:bg-[#E9EFEF] hover:text-[#0B130F] transition-colors"
             title="Toggle Sidebar"
           >
-            <MenuIcon className="h-6 w-6" />
+            {isCollapsed ? <ChevronBarRightIcon className="h-5 w-5" /> : <ChevronBarLeftIcon className="h-5 w-5" />}
           </button>
         </div>
         <div className="flex items-center gap-4">
