@@ -48,6 +48,7 @@ export function FinancialBarChart({ orders, stocks }: { orders: Order[], stocks:
     return Array.from(monthlyMap.values());
   }, [orders, stocks]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (

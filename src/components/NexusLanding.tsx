@@ -420,7 +420,7 @@ export default function NexusLanding() {
                 className={`matrix-tab ${matrixKey === t.key ? "active" : ""}`}
                 type="button"
                 data-goto={t.key}
-                aria-selected={matrixKey === t.key ? "true" : "false"}
+                aria-pressed={matrixKey === t.key ? "true" : "false"}
                 onClick={() => setMatrixKey(t.key)}
               >
                 <span className="tab-line">

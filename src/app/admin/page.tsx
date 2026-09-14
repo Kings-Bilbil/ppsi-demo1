@@ -13,7 +13,7 @@ import { formatIDR } from "@/lib/format";
 import type { Order, Stock } from "@/lib/types";
 import { usePolling } from "@/components/hooks";
 import { ConfirmDialog, EmptyState, Spinner, useToast } from "@/components/ui";
-import { BoxIcon, CheckIcon } from "@/components/icons";
+import { CheckIcon } from "@/components/icons";
 import { FinancialBarChart, PaymentStatusPieChart } from "@/components/admin/AdminCharts";
 
 // Mock helper to get the status badge style
@@ -28,7 +28,6 @@ const getPaymentBadge = (status: string) => {
 export default function AdminHomePage() {
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const [completedCount, setCompletedCount] = useState(0);
   const [pendingComplete, setPendingComplete] = useState<Order | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [mutatingOrderId, setMutatingOrderId] = useState<string | null>(null);
@@ -43,31 +42,16 @@ export default function AdminHomePage() {
       ]);
       setOrders(ordersRes);
       setStocks(stocksRes);
-      if (!isPoll) {
-        try {
-          const historyRes = await api<Order[]>("/api/orders/history");
-          setCompletedCount(historyRes.length);
-        } catch {}
-      }
     } catch (e) {
       if (!isPoll && e instanceof Error) show(e.message, "error");
     }
   }, [show]);
 
-  const loadHistory = useCallback(async () => {
-    try {
-      const historyRes = await api<Order[]>("/api/orders/history");
-      setCompletedCount(historyRes.length);
-    } catch {}
-  }, []);
-
   useEffect(() => {
     void load(false);
-    void loadHistory();
-  }, [load, loadHistory]);
+  }, [load]);
 
   const draggingRef = usePolling(() => void load(true), 30000);
-  usePolling(loadHistory, 60000);
 
   const columns = useMemo(() => {
     const map = new Map<Status, Order[]>(STATUSES.map((s) => [s, []]));
@@ -143,7 +127,6 @@ export default function AdminHomePage() {
         });
         setPendingComplete(null);
         setOrders((prev) => (prev ? prev.filter((o) => o.id !== order.id) : prev));
-        setCompletedCount((c) => c + 1);
         show(`Pesanan ${order.buyerName} selesai & masuk riwayat.`);
       } catch (e) {
         show(e instanceof Error ? e.message : "Gagal menyelesaikan pesanan.", "error");

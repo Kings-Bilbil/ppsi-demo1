@@ -5,7 +5,6 @@ import { useState, type FormEvent } from "react";
 import { api } from "@/lib/client";
 import { Spinner } from "@/components/ui";
 import { NeedleLogo } from "@/components/GarmentArt";
-import { cn } from "@/lib/utils";
 
 const inputCls = "w-full rounded-lg border border-neutral-800 bg-neutral-900/50 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors";
 

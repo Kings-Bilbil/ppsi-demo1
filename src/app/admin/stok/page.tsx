@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ApiError, api } from "@/lib/client";
-import { formatDate, formatIDR } from "@/lib/format";
+import { formatIDR } from "@/lib/format";
 import type { Stock } from "@/lib/types";
 import { usePolling } from "@/components/hooks";
 import {
