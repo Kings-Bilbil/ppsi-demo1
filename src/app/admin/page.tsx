@@ -32,8 +32,13 @@ export default function AdminHomePage() {
   const [pendingComplete, setPendingComplete] = useState<Order | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [mutatingOrderId, setMutatingOrderId] = useState<string | null>(null);
+  const [expandedCols, setExpandedCols] = useState<Record<string, boolean>>({});
   
   const { show, node: toastNode } = useToast();
+
+  const toggleExpand = (status: string) => {
+    setExpandedCols(prev => ({ ...prev, [status]: !prev[status] }));
+  };
 
   const load = useCallback(async (isPoll = false) => {
     try {
@@ -293,74 +298,105 @@ export default function AdminHomePage() {
                       </div>
 
                       <div className="flex flex-1 flex-col gap-3">
-                        {columns.get(status)?.map((order, index) => {
-                          const isMutating = mutatingOrderId === order.id;
-                          return (
-                            <Draggable draggableId={order.id} index={index} key={order.id}>
-                              {(dragProvided, dragSnapshot) => (
-                                <div
-                                  ref={dragProvided.innerRef}
-                                  {...dragProvided.draggableProps}
-                                  {...dragProvided.dragHandleProps}
-                                  className={`relative rounded-xl border border-[#E9EFEF] bg-[#F4F6F5] p-4 transition-all ${
-                                    dragSnapshot.isDragging
-                                      ? "cursor-grabbing shadow-[0_10px_30px_rgba(11,19,15,0.15)] ring-1 ring-[#B4F105]"
-                                      : "cursor-grab hover:border-[#B4F105]/50 hover:shadow-md"
-                                  }`}
-                                >
-                                  <div className="flex justify-between items-start mb-2">
-                                    <p className="truncate pr-2 text-sm font-bold text-[#0B130F]">
-                                      {order.buyerName}
-                                    </p>
-                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ring-1 ring-inset ${getPaymentBadge(order.paymentStatus || "Belum DP")}`}>
-                                      {order.paymentStatus || "Belum DP"}
-                                    </span>
-                                  </div>
-                                  
-                                  <p className="text-xs text-[#6C7E75]">
-                                    {order.stockName} • <span className="text-[#0B130F] font-semibold">{order.quantity} pcs</span>
-                                  </p>
-                                  <p className="mt-2 text-sm font-bold tracking-wide text-[#072F1F]">
-                                    {formatIDR(order.totalPrice)}
-                                  </p>
-                                  
-                                  <p className="mt-3 inline-block rounded-md bg-white px-2 py-1 font-mono text-[10px] tracking-widest text-[#879A91] border border-[#E9EFEF] select-all">
-                                    {order.purchaseCode}
-                                  </p>
+                        {(() => {
+                          const allItems = columns.get(status) ?? [];
+                          const isExpanded = expandedCols[status] || false;
+                          const displayedItems = isExpanded ? allItems : allItems.slice(0, 4);
+                          const hiddenCount = allItems.length - displayedItems.length;
 
-                                  <div className="mt-4 md:hidden">
-                                    <select
-                                      value={order.status}
-                                      onChange={(e) => onMobileStatusChange(order, e.target.value)}
-                                      className="w-full rounded-lg border border-[#E9EFEF] bg-white px-2 py-1.5 text-xs text-[#0B130F] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105]"
-                                    >
-                                      {STATUSES.map((s) => (
-                                        <option key={s} value={s}>
-                                          {s}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  </div>
+                          return (
+                            <>
+                              {displayedItems.map((order, index) => {
+                                const isMutating = mutatingOrderId === order.id;
+                                return (
+                                  <Draggable draggableId={order.id} index={index} key={order.id}>
+                                    {(dragProvided, dragSnapshot) => (
+                                      <div
+                                        ref={dragProvided.innerRef}
+                                        {...dragProvided.draggableProps}
+                                        {...dragProvided.dragHandleProps}
+                                        className={`relative rounded-xl border border-[#E9EFEF] bg-[#F4F6F5] p-4 transition-all ${
+                                          dragSnapshot.isDragging
+                                            ? "cursor-grabbing shadow-[0_10px_30px_rgba(11,19,15,0.15)] ring-1 ring-[#B4F105]"
+                                            : "cursor-grab hover:border-[#B4F105]/50 hover:shadow-md"
+                                        }`}
+                                      >
+                                        <div className="flex justify-between items-start mb-2">
+                                          <p className="truncate pr-2 text-sm font-bold text-[#0B130F]">
+                                            {order.buyerName}
+                                          </p>
+                                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ring-1 ring-inset ${getPaymentBadge(order.paymentStatus || "Belum DP")}`}>
+                                            {order.paymentStatus || "Belum DP"}
+                                          </span>
+                                        </div>
+                                        
+                                        <p className="text-xs text-[#6C7E75]">
+                                          {order.stockName} • <span className="text-[#0B130F] font-semibold">{order.quantity} pcs</span>
+                                        </p>
+                                        <p className="mt-2 text-sm font-bold tracking-wide text-[#072F1F]">
+                                          {formatIDR(order.totalPrice)}
+                                        </p>
+                                        
+                                        <p className="mt-3 inline-block rounded-md bg-white px-2 py-1 font-mono text-[10px] tracking-widest text-[#879A91] border border-[#E9EFEF] select-all">
+                                          {order.purchaseCode}
+                                        </p>
+
+                                        <div className="mt-4 md:hidden">
+                                          <select
+                                            value={order.status}
+                                            onChange={(e) => onMobileStatusChange(order, e.target.value)}
+                                            className="w-full rounded-lg border border-[#E9EFEF] bg-white px-2 py-1.5 text-xs text-[#0B130F] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105]"
+                                          >
+                                            {STATUSES.map((s) => (
+                                              <option key={s} value={s}>
+                                                {s}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                );
+                              })}
+                              {provided.placeholder}
+
+                              {hiddenCount > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleExpand(status)}
+                                  className="mt-2 w-full rounded-xl border border-[#E9EFEF] bg-white py-2.5 text-xs font-bold text-[#6C7E75] shadow-sm hover:bg-[#F4F6F5] hover:text-[#0B130F] transition-colors"
+                                >
+                                  Lihat {hiddenCount} pesanan lainnya ↓
+                                </button>
+                              )}
+                              
+                              {isExpanded && allItems.length > 4 && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleExpand(status)}
+                                  className="mt-2 w-full rounded-xl border border-[#E9EFEF] bg-white py-2.5 text-xs font-bold text-[#6C7E75] shadow-sm hover:bg-[#F4F6F5] hover:text-[#0B130F] transition-colors"
+                                >
+                                  Sembunyikan ↑
+                                </button>
+                              )}
+
+                              {allItems.length === 0 && !snapshot.isDraggingOver && (
+                                <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-[#E9EFEF] p-4">
+                                  <p className="text-center text-xs text-[#879A91]">
+                                    {status === "Selesai" ? (
+                                      <span className="inline-flex items-center gap-1.5">
+                                        <CheckIcon className="h-4 w-4" /> Letakkan di sini
+                                      </span>
+                                    ) : (
+                                      "Kosong"
+                                    )}
+                                  </p>
                                 </div>
                               )}
-                            </Draggable>
+                            </>
                           );
-                        })}
-                        {provided.placeholder}
-
-                        {(columns.get(status)?.length ?? 0) === 0 && !snapshot.isDraggingOver && (
-                          <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-[#E9EFEF] p-4">
-                            <p className="text-center text-xs text-[#879A91]">
-                              {status === "Selesai" ? (
-                                <span className="inline-flex items-center gap-1.5">
-                                  <CheckIcon className="h-4 w-4" /> Letakkan di sini
-                                </span>
-                              ) : (
-                                "Kosong"
-                              )}
-                            </p>
-                          </div>
-                        )}
+                        })()}
                       </div>
                     </div>
                   )}
@@ -408,7 +444,7 @@ export default function AdminHomePage() {
                       </div>
                       <div className="h-2 w-full overflow-hidden rounded-full bg-[#F4F6F5]">
                         <div 
-                          className={`h-full rounded-full transition-all duration-500 ${stock.quantity <= 5 ? "bg-[#EF4444]" : "bg-[#B4F105]"}`} 
+                          className={`h-full rounded-full transition-all duration-500 ${stock.quantity <= 5 ? "bg-[#EF4444] animate-pulse shadow-[0_0_8px_#EF4444]" : "bg-[#B4F105]"}`} 
                           style={{ width: `${percent}%` }} 
                         />
                       </div>
