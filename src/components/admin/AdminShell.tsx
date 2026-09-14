@@ -123,15 +123,10 @@ export default function AdminShell({ username, children }: { username: string; c
         </span>
       </header>
 
-      {/* Topbar Desktop (Optional extra matching) */}
-      <header className="hidden h-[80px] items-center justify-between border-b border-[#E9EFEF] bg-white px-8 lg:flex lg:ml-[280px]">
+      {/* Topbar Desktop */}
+      <header className="hidden h-[80px] items-center justify-end border-b border-[#E9EFEF] bg-white px-8 lg:flex lg:ml-[280px]">
         <div className="flex items-center gap-4">
-          <div className="relative">
-            <input type="text" placeholder="Search anything in Spark..." className="w-80 rounded-full border border-[#E9EFEF] bg-[#F4F6F5] px-5 py-2.5 text-sm text-[#0B130F] placeholder-[#6C7E75] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105] transition-all" />
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 border-l border-[#E9EFEF] pl-4">
+          <div className="flex items-center gap-3 pl-4">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1A3E30] text-sm font-semibold text-[#B4F105]">
               {username.charAt(0).toUpperCase()}
             </span>

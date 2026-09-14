@@ -271,7 +271,7 @@ export default function AdminHomePage() {
             }}
             onDragEnd={onDragEnd}
           >
-            <div className="grid grid-cols-1 gap-5 overflow-x-auto pb-4 md:grid-cols-4 md:[&>*]:min-w-[260px] lg:[&>*]:min-w-[280px]">
+            <div className="grid grid-cols-1 gap-5 overflow-x-auto pb-4 md:grid-cols-4 md:[&>*]:min-w-[260px] lg:[&>*]:min-w-[280px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {STATUSES.map((status) => (
                 <Droppable droppableId={status} key={status}>
                   {(provided, snapshot) => (
@@ -306,14 +306,8 @@ export default function AdminHomePage() {
                                     dragSnapshot.isDragging
                                       ? "cursor-grabbing shadow-[0_10px_30px_rgba(11,19,15,0.15)] ring-1 ring-[#B4F105]"
                                       : "cursor-grab hover:border-[#B4F105]/50 hover:shadow-md"
-                                  } ${isMutating ? "opacity-50 grayscale pointer-events-none" : ""}`}
+                                  }`}
                                 >
-                                  {isMutating && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-xl z-10 backdrop-blur-[1px]">
-                                      <Spinner className="h-6 w-6 text-[#B4F105]" />
-                                    </div>
-                                  )}
-                                  
                                   <div className="flex justify-between items-start mb-2">
                                     <p className="truncate pr-2 text-sm font-bold text-[#0B130F]">
                                       {order.buyerName}
@@ -465,6 +459,15 @@ export default function AdminHomePage() {
           </div>
         </div>
       </div>
+
+      {mutatingOrderId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#051C12]/40 backdrop-blur-sm">
+          <div className="flex flex-col items-center rounded-2xl bg-white px-8 py-6 shadow-2xl">
+            <Spinner className="mb-4 h-10 w-10 text-[#B4F105]" />
+            <p className="font-semibold text-[#0B130F]">Memperbarui Status...</p>
+          </div>
+        </div>
+      )}
 
       <ConfirmDialog
         open={pendingComplete !== null}

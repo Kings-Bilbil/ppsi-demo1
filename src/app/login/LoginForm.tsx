@@ -6,7 +6,7 @@ import { api } from "@/lib/client";
 import { Spinner } from "@/components/ui";
 import { NeedleLogo } from "@/components/GarmentArt";
 
-const inputCls = "w-full rounded-lg border border-neutral-800 bg-neutral-900/50 px-4 py-2.5 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors";
+const inputCls = "w-full rounded-lg border border-[#E9EFEF] bg-[#F4F6F5] px-4 py-2.5 text-sm text-[#0B130F] placeholder:text-[#879A91] focus:border-[#B4F105] focus:outline-none focus:ring-1 focus:ring-[#B4F105] transition-colors";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -33,30 +33,25 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4 font-sans selection:bg-amber-500/30">
-      {/* Decorative background element */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[800px] h-[800px] opacity-[0.03] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500 via-neutral-950 to-neutral-950"></div>
-      </div>
-
+    <div className="flex min-h-screen items-center justify-center bg-[#F4F6F5] px-4 font-sans selection:bg-[#B4F105]/30">
       <div className="w-full max-w-sm relative z-10">
         <div className="mb-8 flex flex-col items-center gap-3">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-neutral-950 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#051C12] text-[#B4F105] shadow-sm">
             <NeedleLogo className="h-7 w-7" />
           </span>
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold tracking-wide text-amber-500">ARUNIKA</h1>
-            <p className="text-xs tracking-widest text-neutral-500 uppercase mt-1">Admin Portal</p>
+            <h1 className="font-display text-2xl font-bold tracking-wide text-[#051C12]">SPARK ARUNIKA</h1>
+            <p className="text-xs tracking-widest text-[#6C7E75] uppercase mt-1">Admin Portal</p>
           </div>
         </div>
 
         <form
           onSubmit={onSubmit}
-          className="rounded-2xl border border-neutral-800/60 bg-neutral-900/40 p-7 shadow-2xl backdrop-blur-xl"
+          className="rounded-2xl border border-[#E9EFEF] bg-white p-7 shadow-xl"
         >
           <div className="space-y-5">
             <div>
-              <label htmlFor="username" className="mb-2 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label htmlFor="username" className="mb-2 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Username
               </label>
               <input
@@ -71,7 +66,7 @@ export default function LoginForm() {
             </div>
 
             <div>
-              <label htmlFor="password" className="mb-2 block text-xs font-medium tracking-wide text-neutral-400 uppercase">
+              <label htmlFor="password" className="mb-2 block text-xs font-medium tracking-wide text-[#6C7E75] uppercase">
                 Password
               </label>
               <input
@@ -88,7 +83,7 @@ export default function LoginForm() {
           </div>
 
           {error && (
-            <div className="mt-5 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400 text-center">
+            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 text-center">
               {error}
             </div>
           )}
@@ -96,15 +91,15 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-neutral-950 transition-all hover:bg-amber-400 hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] disabled:opacity-60 disabled:hover:shadow-none"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#B4F105] px-4 py-3 text-sm font-semibold text-[#051C12] transition-all hover:bg-[#c1f824] disabled:opacity-60"
           >
             {loading ? <Spinner className="h-5 w-5" /> : "Masuk ke Dashboard"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-neutral-500">
-          Demo: username <span className="font-mono text-amber-500/80">admin</span> / password{" "}
-          <span className="font-mono text-amber-500/80">admin123</span>
+        <p className="mt-6 text-center text-xs text-[#879A91]">
+          Demo: username <span className="font-mono text-[#051C12] font-semibold">admin</span> / password{" "}
+          <span className="font-mono text-[#051C12] font-semibold">admin123</span>
         </p>
       </div>
     </div>
